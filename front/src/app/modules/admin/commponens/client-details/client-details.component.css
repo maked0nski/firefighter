@@ -1,0 +1,44 @@
+mat-card{
+  max-width: none;
+}
+.text-themecolor {
+  color: #1e88e5;
+}
+.clientData{
+  text-align: left !important;
+}
+.example-button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.client-item{
+  margin-bottom: 5px;
+}
+.contactHeader{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ }
+
+.contactHeader .mat-card-subtitle{
+  margin-bottom: 0;
+}
+
+.contactHeader button {
+  margin: 7px 7px;
+}
+
+button {
+  margin: 16px 7px;
+}
+/* Structure */
+table {
+  width: 100%;
+  text-align: left !important;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

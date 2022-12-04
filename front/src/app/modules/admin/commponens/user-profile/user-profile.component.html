@@ -1,0 +1,79 @@
+<mat-card class="oh text-center little-profile">
+  <!--  <img mat-card-image src="assets/images/background/profile-bg.jpg" alt="Photo of a Shiba Inu">-->
+  <mat-card-content>
+    <div class="pro-img" matTooltip="Змінити фотографію" matTooltipPosition="above">
+      <img src="http://localhost:8080/users/avatar/{{user.image}}" width="100" alt="user" class="img-circle" (click)="uploadFile()">
+    </div>
+    <h2 class="m-b-0">{{user.surename ? user.surename : 'Не заповнено'}} {{user.name ? user.name : 'Не заповнено'}} {{user.fathersname ? user.fathersname : 'Не заповнено'}}</h2>
+    <h4 class="m-t-0 ">Дата нородження: {{user.birthday ? user.birthday : 'Не заповнено'}}</h4>
+    <h4 class="m-t-0 ">Мобільний номер телефону: {{user.phone ? user.phone : 'Не заповнено'}}</h4>
+    <h4 class="m-t-0 ">Електронна адреса: {{user.email ? user.email : 'Не заповнено'}}</h4>
+    <h4 class="m-t-0 ">Посада: Монтажник</h4>
+    <h4 class="m-t-0 ">Закріплене авто: Ламборджини </h4>
+    <h4 class="m-t-0 ">Видана паливна карта: 1111 1111 1111 1111</h4>
+
+  </mat-card-content>
+
+  <mat-accordion class="example-headers-align" multi>
+    <mat-expansion-panel (closed)="false" #mapanel="matExpansionPanel">
+      <mat-expansion-panel-header (click)="edit()">
+
+        <mat-panel-title>
+          Редагувати данні
+        </mat-panel-title>
+
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="form" class="my-form">
+
+        <mat-form-field appearance="fill">
+          <mat-label>Прізвище</mat-label>
+          <input matInput formControlName="surename">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Ім'я</mat-label>
+          <input matInput formControlName="name">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>По батькові</mat-label>
+          <input matInput formControlName="fathersname">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Телефон</mat-label>
+          <input matInput [imask]="{mask: '(000) 00-00-000'}" formControlName="phone">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>День народження дд.мм.рік</mat-label>
+          <input matInput [imask]="{mask: '00.00.0000'}" formControlName="birthday">
+        </mat-form-field>
+
+<!--        <mat-form-field appearance="fill">-->
+<!--          <mat-label>Фото</mat-label>-->
+<!--          <ngx-mat-file-input formControlName="image" placeholder="Фото" ></ngx-mat-file-input>-->
+<!--          <mat-icon matSuffix>folder</mat-icon>-->
+<!--&lt;!&ndash;          <input matInput formControlName="image">&ndash;&gt;-->
+<!--        </mat-form-field>-->
+
+        <mat-form-field appearance="fill">
+          <mat-label>Права користувача</mat-label>
+          <input matInput formControlName="role">
+        </mat-form-field>
+
+        <!--        <mat-form-field appearance="fill">-->
+        <!--          <mat-label>Посада</mat-label>-->
+        <!--          <input matInput formControlName="positionId">-->
+        <!--        </mat-form-field>-->
+
+        <mat-action-row>
+          <button mat-raised-button (click)="update()">Оновити</button>
+        </mat-action-row>
+      </form>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</mat-card>

@@ -1,0 +1,12 @@
+<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5" *ngIf="userData"> <img src="http://localhost:8080/users/avatar/{{userData.image}}" alt="user" class="profile-pic"> </button>
+<mat-menu #profile="matMenu" class="mymegamenu">
+  <button mat-menu-item>
+    <mat-icon>settings</mat-icon> Налаштування </button>
+  <button mat-menu-item routerLink="/admin/userProfile">
+    <mat-icon>account_box</mat-icon> Профіль </button>
+  <button mat-menu-item>
+    <mat-icon>notifications_off</mat-icon> Відключити нагадування </button>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon> Вийти з аккаунта </button>
+</mat-menu>
+

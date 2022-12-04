@@ -1,0 +1,20 @@
+mat-card {
+  max-width: none;
+}
+
+table {
+  width: 100%;
+  text-align: left !important;
+}
+
+.mat-column-quantity {
+  font-weight: bold;
+}
+
+.mat-cell, .mat-header-cell {
+  text-align: center;
+}
+
+.mat-column-edit, .mat-column-edit {
+  width: 90px;
+}

@@ -1,0 +1,63 @@
+<div class="main-container">
+  <mat-toolbar color="primary" class="topbar telative">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.html">
+        <!-- Logo icon -->
+        <b>
+          <!-- Dark Logo icon -->
+          <img src="assets/images/logo-icon.png" alt="homepage" class="dark-logo">
+          <!-- Light Logo icon -->
+          <img src="assets/images/logo-light-icon.png" alt="homepage" class="light-logo">
+        </b>
+
+        <!-- Logo text -->
+        <span fxShow="false" fxShow.gt-xs>
+          <!-- dark Logo text -->
+        <img src="assets/images/logo-text.png" alt="homepage" class="dark-logo">
+          <!-- Light Logo text -->
+        <img src="assets/images/logo-light-text.png" class="light-logo" alt="homepage">
+        </span> </a>
+      <button mat-icon-button value="sidebarclosed" (click)="snav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span fxFlex></span>
+    </div>
+
+    <app-header></app-header>
+  </mat-toolbar>
+
+
+  <mat-sidenav-container class="example-sidenav-container" [style.marginTop.px]="0">
+    <!-- ============================================================== -->
+    <!-- Sidebar - style you can find in sidebar.scss -->
+    <!-- ============================================================== -->
+    <mat-sidenav #snav id="snav" class="dark-sidebar pl-xs" mode="side" opened="true" disableClose="true" fixedTopGap="0" >
+
+      <app-sidebar></app-sidebar>
+
+
+    </mat-sidenav>
+    <!-- ============================================================== -->
+    <!-- Sidebar - style you can find in sidebar.scss -->
+    <!-- ============================================================== -->
+
+    <!-- ============================================================== -->
+    <!-- Page container - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+    <mat-sidenav-content class="page-wrapper">
+
+      <div class="page-content">
+
+        <router-outlet>
+<!--          <app-spinner></app-spinner>-->
+        </router-outlet>
+
+      </div>
+
+    </mat-sidenav-content>
+    <!-- ============================================================== -->
+    <!-- Page container - style you can find in pages.scss -->
+    <!-- ============================================================== -->
+  </mat-sidenav-container>
+
+</div>

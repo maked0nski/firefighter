@@ -1,0 +1,133 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>Список автомобілів</mat-card-title>
+    <!--    <mat-card-subtitle>Тут виведений список автомобілів на підприємстві.-->
+    <!--    </mat-card-subtitle>-->
+
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel (closed)="false" #mapanel="matExpansionPanel">
+        <mat-expansion-panel-header>
+
+          <mat-panel-title>
+            Додати автомобіль
+          </mat-panel-title>
+
+          <mat-panel-description>
+
+            <mat-icon>directions_car</mat-icon>
+          </mat-panel-description>
+
+        </mat-expansion-panel-header>
+
+        <form [formGroup]="form" class="my-form">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Vin код 17 символів</mat-label>
+            <input matInput formControlName="vin" required minlength="17" maxlength="17">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Модель</mat-label>
+            <input matInput formControlName="model">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-select required formControlName="fuel">
+              <mat-option value="Бензин">Бензин</mat-option>
+              <mat-option value="Дизель">Дизель</mat-option>
+              <mat-option value="Газ">Газ</mat-option>
+            </mat-select>
+            <mat-label>Паливо</mat-label>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Рік випуску</mat-label>
+            <input matInput minlength="4" maxlength="4" formControlName="year">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Техпаспорт</mat-label>
+            <input matInput formControlName="passport_car">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Оддометр</mat-label>
+            <input type="number" matInput formControlName="oddometr">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Страховка</mat-label>
+            <input type="date" matInput formControlName="insurance">
+          </mat-form-field>
+
+          <mat-action-row>
+            <button mat-raised-button (click)="save()">{{!forUpdate ? "Створити" : "Редагувати"}}</button>
+          </mat-action-row>
+        </form>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+
+    <mat-form-field appearance="standard">
+      <mat-label>Фільтр</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Введіть данні для пошуку..." #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="table" class="mat-elevation-z8">
+
+      <!-- Model column -->
+      <ng-container matColumnDef="model">
+        <th mat-header-cell *matHeaderCellDef>Модель</th>
+        <td mat-cell *matCellDef="let element" (click)="edit(element)"> {{element.model}} </td>
+      </ng-container>
+
+      <!-- Insurance column -->
+      <ng-container matColumnDef="insurance">
+        <th mat-header-cell *matHeaderCellDef>Страхівка дійсна до:</th>
+        <td mat-cell *matCellDef="let element" (click)="edit(element)">
+          <span
+            class="{{element.timeLeft > 30 ? 'normal' : 'red_Color'}}">
+            {{element.insurance}}
+          </span>
+          <span *ngIf="element.timeLeft <= 30" matBadge="{{element.timeLeft}}" matBadgeColor="warn"
+                matBadgeOverlap="false"></span>
+        </td>
+      </ng-container>
+
+      <!-- Edit Column -->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Редагувати</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="edit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <!--          <button mat-raised-button (click)="edit(element) "> Редагувати</button>-->
+        </td>
+      </ng-container>
+
+      <!-- Delete Column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Видалити</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="delete(element.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+          <!--          <button mat-raised-button (click)="delete(element.id)"> Видалити</button>-->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Немає співпадіння по пошуку "{{input.value}}" або карточки не створені</td>
+      </tr>
+    </table>
+
+  </mat-card-content>
+</mat-card>

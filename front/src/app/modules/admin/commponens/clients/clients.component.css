@@ -1,0 +1,29 @@
+mat-card{
+  max-width: none;
+}
+
+.example-button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+button {
+  margin: 16px 7px;
+}
+.mat-header-row{
+  text-align: center;
+}
+.mat-column-delete{
+  text-align: end;
+  width: 55px;
+}
+/* Structure */
+table {
+  width: 100%;
+  text-align: left !important;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}

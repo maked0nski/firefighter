@@ -1,0 +1,10 @@
+export const SWAGGER_EXAMPLE_OBSERVATION = {
+    id: 1,
+    number: 1010,
+    contract: null
+}
+
+export const SWAGGER_EXAMPLE_OBSERVATION_LIST = [
+    SWAGGER_EXAMPLE_OBSERVATION,
+    SWAGGER_EXAMPLE_OBSERVATION
+]

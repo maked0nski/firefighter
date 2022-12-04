@@ -1,0 +1,37 @@
+<!-- ============================================================== -->
+<!-- sidebar -->
+<!-- ============================================================== -->
+<div class="user-profile" style="background: url(assets/images/background/user-info.jpg) no-repeat;">
+  <!-- User profile image -->
+  <a routerLink="/admin/userProfile"><div class="profile-img"   *ngIf="userData"> <img  src="http://localhost:8080/users/avatar/{{userData.image}}" alt="user"> </div></a>
+
+  <!-- User profile text-->
+  <!-- ============================================================== -->
+  <!-- Profile - style you can find in header.scss -->
+  <!-- ============================================================== -->
+  <div class="profile-text"><a [matMenuTriggerFor]="sdprofile" class="" *ngIf="userData"> {{userData.surename ? userData.surename : 'Не заповнено'}} {{userData.name ? userData.name : 'Не заповнено'}} <i class="ti-angle-down font-12 m-l-5"></i></a></div>
+  <mat-menu #sdprofile="matMenu" class="mymegamenu">
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon> Налаштування </button>
+    <button mat-menu-item routerLink="/admin/userProfile">
+      <mat-icon>account_box</mat-icon> Профіль </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon> Відключити нагадування </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon> Вийти з аккаунта </button>
+  </mat-menu>
+
+</div>
+<mat-nav-list appAccordion>
+  <mat-list-item appAccordionLink *ngFor="let menuitem of menuItems.getMenuitem()" routerLinkActive="selected" group="{{menuitem.state}}">
+    <a class="" appAccordionToggle [routerLink]="['/admin/', menuitem.state]" *ngIf="menuitem.type === 'link'">
+      <mat-icon>{{ menuitem.icon }}</mat-icon>
+      <span>{{ menuitem.name }}</span>
+      <span fxFlex></span>
+<!--      <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem?.badge">{{ badge.value }}</span>-->
+    </a>
+
+
+  </mat-list-item>
+
+</mat-nav-list>

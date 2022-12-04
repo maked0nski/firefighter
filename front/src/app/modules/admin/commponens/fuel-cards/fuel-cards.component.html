@@ -1,0 +1,130 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>Список паливних карток</mat-card-title>
+    <mat-card-subtitle>Тут виведений список існуючих паливних карток на підприємстві. Ви можете додати або редагувати
+      карточку.
+    </mat-card-subtitle>
+
+    <mat-accordion class="example-headers-align" multi>
+      <mat-expansion-panel (closed)="false" #mapanel="matExpansionPanel">
+        <mat-expansion-panel-header>
+
+          <mat-panel-title>
+            Додати паливну картку
+          </mat-panel-title>
+
+          <mat-panel-description>
+            Тут можна додати додати паливну картку
+            <mat-icon>payment</mat-icon>
+          </mat-panel-description>
+
+        </mat-expansion-panel-header>
+
+
+        <form [formGroup]="form" class="my-form">
+
+          <mat-form-field appearance="fill">
+            <mat-label>№ карти</mat-label>
+            <input matInput [imask]="{mask: '0000 0000 0000 0000'}" formControlName="number">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Пін код</mat-label>
+            <input matInput [imask]="{mask: '0000'}" formControlName="pin">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-select required formControlName="station_brend">
+              <mat-option value="WOG">WOG</mat-option>
+              <mat-option value="OKKO">OKKO</mat-option>
+            </mat-select>
+            <mat-label>Заправка</mat-label>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-select required formControlName="active">
+              <mat-option [value]="true">Активна</mat-option>
+              <mat-option [value]="false">Не активна</mat-option>
+            </mat-select>
+            <mat-label>Чи діюча картка</mat-label>
+          </mat-form-field>
+
+          <mat-action-row>
+            <button mat-raised-button (click)="checkUnicNumber(template)">{{!forUpdate ? "Створити" : "Оновити"}}</button>
+<!--            <button mat-raised-button (click)="save()">{{!forUpdate ? "Створити" : "Оновити"}}</button>-->
+          </mat-action-row>
+        </form>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Фільтр</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Введіть данні..." #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="fuelCards" class="mat-elevation-z8">
+
+      <!-- Card number Column -->
+      <ng-container matColumnDef="number">
+        <th mat-header-cell *matHeaderCellDef> № Картки.</th>
+        <td mat-cell *matCellDef="let element">  {{element.number}} </td>
+      </ng-container>
+
+      <!-- Pin Column -->
+      <ng-container matColumnDef="pin">
+        <th mat-header-cell *matHeaderCellDef> Пін код</th>
+        <td mat-cell *matCellDef="let element"> {{element.pin}} </td>
+      </ng-container>
+
+      <!-- Active Column -->
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef> Статус</th>
+        <td mat-cell *matCellDef="let element">
+          {{!!element.active ? "Активна" : "Заблокована"}}
+        </td>
+      </ng-container>
+
+      <!-- Station_Brend Column -->
+      <ng-container matColumnDef="station_brend">
+        <th mat-header-cell *matHeaderCellDef> Заправка</th>
+        <td mat-cell *matCellDef="let element"> {{element.station_brend}} </td>
+      </ng-container>
+
+      <!-- Edit Column -->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Редагувати</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="edit(element)"><mat-icon>edit</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <!-- Delete Column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Видалити</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="delete(element.id)"><mat-icon>delete</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Немає співпадіння по пошуку "{{input.value}}" або карточки не створені</td>
+      </tr>
+    </table>
+
+
+    <ng-template #template>
+      <h1>Помилка</h1>
+      <p>Карточка з цим номером вже існує </p>
+
+      <div mat-dialog-actions>
+        <button mat-button mat-dialog-close>Close</button>
+      </div>
+    </ng-template>
+
+  </mat-card-content>
+</mat-card>

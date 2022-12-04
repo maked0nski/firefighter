@@ -1,0 +1,123 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>Список клієнтів</mat-card-title>
+    <mat-card-subtitle>Список клієнтів з якими ми співпрацюємо.
+    </mat-card-subtitle>
+
+    <mat-accordion>
+      <mat-expansion-panel hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Створити фірму
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+
+
+        <form [formGroup]="form" class="my-form">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Назва:</mat-label>
+            <input matInput formControlName="name">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Місто:</mat-label>
+            <input matInput formControlName="city">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Адреса:</mat-label>
+            <input matInput formControlName="address">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Координати:</mat-label>
+            <input matInput formControlName="coordinate">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Договір на обслуговування:</mat-label>
+            <input matInput formControlName="service_contract">
+          </mat-form-field>
+
+          <mat-action-row>
+            <button mat-button color="primary" (click)="save()">Зберегти зміни</button>
+            <!--            <button mat-button color="primary" *ngIf="hydrant" (click)="delete(hydrant.id)">Видалити</button>-->
+          </mat-action-row>
+
+        </form>
+
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Фільтр</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Введіть данні..." #input>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="table" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Назва фірми</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="[element.id]"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- City client firm column -->
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef>Місто</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="[element.id]"> {{element.city}} </td>
+      </ng-container>
+
+      <!-- Address client firm column -->
+      <ng-container matColumnDef="address">
+        <th mat-header-cell *matHeaderCellDef>Адреса</th>
+        <td mat-cell *matCellDef="let element" [routerLink]="[element.id]"> {{element.address}} </td>
+      </ng-container>
+
+      <!-- Edit button column -->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>Редагувати</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="primary" (click)="edit(element)"><mat-icon>edit</mat-icon></button>
+
+          <!--        <button mat-icon-button color="warn" (click)="openDialog(template)"><mat-icon>delete</mat-icon></button>-->
+        </td>
+      </ng-container>
+
+      <!-- delede button column -->
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef>Видалити</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="warn" (click)="delete(element.id, template)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <!--        <button mat-icon-button color="warn" (click)="openDialog(template)"><mat-icon>delete</mat-icon></button>-->
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+
+      <!-- Row shown when there is no matching data. -->
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">Немає співпадіння по пошуку "{{input.value}}" або карточки не створені</td>
+      </tr>
+    </table>
+
+    <ng-template #template>
+      <h1>Ви дійсно хочите видалити ?</h1>
+      <p>Треба реалізувати каскадне видалення клієнтської організації разом з усіма привязаними данними </p>
+      <button mat-icon-button color="warn">
+        Видалити
+        <mat-icon>check</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="onNoClick()">
+        Відмінити
+        <mat-icon>close</mat-icon>
+      </button>
+    </ng-template>
+
+  </mat-card-content>
+</mat-card>

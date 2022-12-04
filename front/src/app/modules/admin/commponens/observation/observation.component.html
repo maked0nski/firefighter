@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title>Даннні про спостереження</mat-card-title>
+
+    <mat-accordion>
+
+
+      <mat-expansion-panel (opened)="_fildForm()" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Об'єктовий номер: {{observation?.number}}
+          </mat-panel-title>
+          <mat-panel-description>
+            Договір: {{observation?.contract}}
+          </mat-panel-description>
+          <mat-panel-description *ngIf="observation?.sim_card?.number">
+            Сім Карта:  {{observation?.sim_card?.number | telephone }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+
+        <form *ngIf="simCartList" [formGroup]="form" class="my-form">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Об'єктовий номер:</mat-label>
+            <input matInput [imask]="{mask: '0000'}" formControlName="number">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Договір:</mat-label>
+            <input matInput formControlName="contract">
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Sim_CardId:</mat-label>
+<!--            <input matInput formControlName="sim_cardId">-->
+            <mat-select required formControlName="sim_cardId">
+              <mat-option></mat-option>
+              <mat-option [value]="option.id" *ngFor="let option of simCartList">{{ option.number }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+
+
+          <mat-action-row>
+            <button mat-button color="primary" (click)="edit()">Зберегти зміни</button>
+<!--            <button mat-button color="primary" *ngIf="hydrant" (click)="delete(hydrant.id)">Видалити</button>-->
+          </mat-action-row>
+
+        </form>
+
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+
+  </mat-card-content>
+</mat-card>

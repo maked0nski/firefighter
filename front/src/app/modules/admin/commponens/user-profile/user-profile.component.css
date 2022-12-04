@@ -1,0 +1,11 @@
+mat-card {
+  max-width: none;
+}
+
+.little-profile .pro-img, .little-profile .pro-img:first-child {
+  margin-top: 20px !important;
+}
+
+.mat-expansion-panel-header-title {
+  justify-content: center;
+}

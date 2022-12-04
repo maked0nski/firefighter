@@ -1,0 +1,153 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title class="text-themecolor mb-0">Клієнт деталі</mat-card-title>
+<!--    <mat-card-subtitle>Список клієнтів з якими ми співпрацюємо.</mat-card-subtitle>-->
+    <mat-card-content class="mat-elevation-z8 clientData">
+
+      <mat-card-title class="text-themecolor text-center">{{client.name}}</mat-card-title>
+
+      <mat-card-subtitle>Місто: <span class="fw-bold">{{client.city}}</span></mat-card-subtitle>
+      <mat-card-subtitle>Адреса: <span class="fw-bold"><a target="_blank"
+                                                          href="https://www.google.com.ua/maps/place/{{client.coordinate}}">{{client.address}}</a></span>
+      </mat-card-subtitle>
+      <mat-card-subtitle>Договір на обслуговування: <span class="fw-bold">{{client.service_contract}}</span>
+      </mat-card-subtitle>
+
+      <mat-card-content class="mat-elevation-z8">
+
+
+        <mat-card-subtitle>Контактні особи:</mat-card-subtitle>
+
+        <mat-accordion class="example-headers-align client-item">
+
+          <mat-expansion-panel hideToggle>
+
+            <mat-expansion-panel-header>
+              <!--              <mat-panel-title>-->
+              <!--                Створити контактну особу-->
+              <!--              </mat-panel-title>-->
+              <mat-panel-description>
+                Створити контактну особу
+              </mat-panel-description>
+              <mat-icon>add</mat-icon>
+            </mat-expansion-panel-header>
+
+            <form [formGroup]="contactForm" class="my-form createContact">
+
+<!--              <mat-form-field appearance="fill">-->
+<!--                <mat-label>Прізвище</mat-label>-->
+<!--                <input matInput formControlName="surename">-->
+<!--              </mat-form-field>-->
+
+              <mat-form-field appearance="fill">
+                <mat-label>Ім'я</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+
+<!--              <mat-form-field appearance="fill">-->
+<!--                <mat-label>По батькові</mat-label>-->
+<!--                <input matInput formControlName="fathersname">-->
+<!--              </mat-form-field>-->
+
+              <mat-form-field appearance="fill">
+                <mat-label>Телефон</mat-label>
+                <input matInput formControlName="phone" [imask]="{mask: '(000) 00-00-000'}">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Посада</mat-label>
+                <input matInput formControlName="position">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+              </mat-form-field>
+
+              <mat-action-row>
+                <button mat-button color="primary" (click)="addContact()">Додати контактну особу</button>
+              </mat-action-row>
+
+            </form>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel *ngFor="let item of client.contact_person" (opened)="_fillContectForm(item)" hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{item.name}}
+              </mat-panel-title>
+              <mat-panel-description>
+                {{item.phone}} {{item.position}}
+              </mat-panel-description>
+              <mat-icon>account_circle</mat-icon>
+            </mat-expansion-panel-header>
+
+            <form [formGroup]="contactForm" class="my-form">
+
+<!--              <mat-form-field appearance="fill">-->
+<!--                <mat-label>Прізвище</mat-label>-->
+<!--                <input matInput formControlName="surename">-->
+<!--              </mat-form-field>-->
+
+              <mat-form-field appearance="fill">
+                <mat-label>Ім'я</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+
+<!--              <mat-form-field appearance="fill">-->
+<!--                <mat-label>По батькові</mat-label>-->
+<!--                <input matInput formControlName="fathersname">-->
+<!--              </mat-form-field>-->
+
+              <mat-form-field appearance="fill">
+                <mat-label>Телефон</mat-label>
+                <input matInput formControlName="phone" [imask]="{mask: '(000) 00-00-000'}">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Посада</mat-label>
+                <input matInput formControlName="position">
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email">
+              </mat-form-field>
+
+              <mat-action-row>
+                <button mat-button color="primary" (click)="editContact(item)">Зберегти зміни</button>
+              </mat-action-row>
+
+            </form>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+
+
+      </mat-card-content>
+
+
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Вогнегасники">
+          <app-fire-extinguishers></app-fire-extinguishers>
+        </mat-tab>
+
+        <mat-tab label="Пожежні рукави">
+          <app-fire-hydrant></app-fire-hydrant>
+        </mat-tab>
+
+        <mat-tab label="Просочка">
+          <app-fire-resistant-impregnation></app-fire-resistant-impregnation>
+        </mat-tab>
+
+        <mat-tab label="Спостереження">
+          <app-observation></app-observation>
+        </mat-tab>
+
+      </mat-tab-group>
+
+
+    </mat-card-content>
+  </mat-card-content>
+</mat-card>
