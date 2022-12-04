@@ -47,13 +47,6 @@ export class SimCardController {
         return this.simCardService.findAll();
     };
 
-    // @ApiOperation({summary: 'Find all active sim cards'})
-    // @CustomOkResponse({status: HttpStatus.CREATED, exampleData: SWAGGER_EXAMPLE_SIM_CARD_LIST})
-    // @HttpCode(HttpStatus.OK)
-    // @Get('/active')
-    // findActive(): Promise<CreateSimCardDto[]> {
-    //     return this.simCardService.findActive();
-    // };
 
     @ApiOperation({summary: 'Find all active sim cards'})
     @CustomOkResponse({status: HttpStatus.CREATED, exampleData: SWAGGER_EXAMPLE_SIM_CARD_LIST})

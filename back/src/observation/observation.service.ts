@@ -10,9 +10,19 @@ export class ObservationService {
     constructor(private readonly prismaService: PrismaService) {
     }
 
-    create(dto: CreateObservationDto): Promise<CreateObservationDto> {
+    create(dto: CreateObservationDto): Promise<ObservationWithSimDto> {
         return Promise
-            .resolve(this.prismaService.observation.create({data: dto}))
+            .resolve(this.prismaService.observation
+                .create({
+                    data: dto,
+                    select: {
+                        id: true,
+                        number: true,
+                        contract: true,
+                        sim_cardId: true,
+                        sim_card: true
+                    }
+                }))
             .catch((error) => {
                 if (error instanceof PrismaClientKnownRequestError && error.code === 'P2002') {
                     throw new NotFoundException(Exception.FORBIDDEN)

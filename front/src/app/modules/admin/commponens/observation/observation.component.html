@@ -34,18 +34,15 @@
           <mat-form-field appearance="fill">
             <mat-label>Sim_CardId:</mat-label>
 <!--            <input matInput formControlName="sim_cardId">-->
-            <mat-select required formControlName="sim_cardId">
-              <mat-option></mat-option>
-              <mat-option [value]="option.id" *ngFor="let option of simCartList">{{ option.number }}</mat-option>
+            <mat-select placeholder="Сім картка" required formControlName="sim_cardId" [compareWith]="compareFn">
+              <mat-option>Пусто</mat-option>
+              <mat-option [value]="simCart.id" *ngFor="let simCart of simCartList">{{ simCart.number }}</mat-option>
             </mat-select>
           </mat-form-field>
 
-
-
-
           <mat-action-row>
-            <button mat-button color="primary" (click)="edit()">Зберегти зміни</button>
-<!--            <button mat-button color="primary" *ngIf="hydrant" (click)="delete(hydrant.id)">Видалити</button>-->
+            <button mat-button color="primary" (click)="save()">{{!observation ? "Створити" : "Редагувати"}}</button>
+            <button mat-button color="primary" *ngIf="observation" (click)="delete(observation.id)">Видалити</button>
           </mat-action-row>
 
         </form>
