@@ -17,9 +17,10 @@ export class CreateObservationDto {
     @IsOptional()
     public contract?: string;
 
-    @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required: true})
-    @IsNumber()
-    public sim_cardId: number;
+    // @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required: true})
+    @IsString()
+    @IsOptional()
+    public sim_cardNumber?: string;
 
     @ApiProperty({example: '1', description: 'id обєктома', required: false})
     @IsNumber()

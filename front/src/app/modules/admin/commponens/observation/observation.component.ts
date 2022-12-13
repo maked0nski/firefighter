@@ -42,36 +42,20 @@ export class ObservationComponent implements OnInit {
         this.form = new UntypedFormGroup({
             number: new UntypedFormControl(null, Validators.required),
             contract: new UntypedFormControl(null, [Validators.required]),
-            sim_cardId: new UntypedFormControl(null, [Validators.required]),
+            sim_cardNumber: new UntypedFormControl(null, [Validators.required]),
         })
-    }
-
-    // edit(): void {
-    //     if (this.observation && this.client?.id) {
-    //         let data = {
-    //             id: this.observation.id,
-    //             number: Number(this.form.getRawValue().number),
-    //             contract: this.form.getRawValue().contract,
-    //             sim_cardId: this.form.getRawValue().sim_cardId,
-    //         }
-    //         console.log(data)
-    //         this.observationService
-    //             .update(data.id, data)
-    //     }
-    // }
-
-    compareFn(optionOne: any, optionTwo: any): boolean {
-        return optionOne?.number === optionTwo?.number;
     }
 
     save() {
         let data = {
             ...this.form.getRawValue(),
             number: Number(this.form.getRawValue().number),
-            firmId: this.client?.id
         }
         if (!this.observation) {
-            console.log("save")
+            data = {
+                ...data,
+                firmId: this.client?.id
+            }
             this.observationService
                 .create(data)
                 .subscribe(value => {
@@ -80,11 +64,6 @@ export class ObservationComponent implements OnInit {
                     this.pannel?.close()
                 })
         } else {
-            console.log("edit")
-            data = {
-                ...data,
-                id: this.observation.id,
-            }
             this.observationService
                 .update(this.observation.id, data)
                 .subscribe(value => {
@@ -92,19 +71,17 @@ export class ObservationComponent implements OnInit {
                     this.form.reset();
                     this.pannel?.close();
                 })
-            console.log(data)
         }
 
     }
 
     _fildForm() {
-        if (this.observation && this.observation?.sim_card ) {
+        if (this.observation && this.observation?.sim_card) {
             this.simCartList?.push(this.observation?.sim_card)
-            console.log(this.observation)
             this.form.setValue({
                 number: this.observation.number.toString(),
                 contract: this.observation.contract,
-                sim_cardId: this.observation.sim_card?.number,
+                sim_cardNumber: this.observation.sim_card?.number,
                 // select.value = this.observation?.sim_card?.number
             })
         }
@@ -113,7 +90,13 @@ export class ObservationComponent implements OnInit {
 
 
     delete(id: number) {
-        this.observationService.delete(id);
+        this.observationService
+            .delete(id)
+            .subscribe(() => {
+                this.observation = undefined;
+                this.form.reset();
+                this.pannel?.close();
+            });
     }
 
 

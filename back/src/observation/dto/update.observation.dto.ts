@@ -14,8 +14,8 @@ export class UpdateObservationDto {
     @IsOptional()
     public contract?: string;
 
-    @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required:false})
+    // @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required:false})
     @IsOptional()
-    @IsNumber()
-    public sim_cardId?: number;
+    @IsString()
+    public sim_cardNumber: string;
 }

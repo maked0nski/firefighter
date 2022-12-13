@@ -125,8 +125,8 @@ model Observation {
   id         Int      @id @unique @default(autoincrement()) @map("observation_id")
   number     Int
   contract   String?
-  sim_card   Sim_card? @relation(fields: [sim_cardId], references: [id])
-  sim_cardId Int?      @unique()
+  sim_card   Sim_card? @relation(fields: [sim_cardNumber], references: [number])
+  sim_cardNumber String?      @unique()
   firmId     Int?     @unique(map: "Observation_firmId_key")
   client     Client?  @relation(fields: [firmId], references: [id], map: "Observation_firmId_key")
 }

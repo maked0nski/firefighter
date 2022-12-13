@@ -74,13 +74,8 @@ export class CarService {
             .update({
                 where: {id},
                 data: {
-                    vin: car.vin,
-                    model: car.model,
-                    fuel: car.fuel,
-                    year: car.year,
-                    passport_car: car.passport_car,
-                    oddometr: car.oddometr,
-                    insurance: car.insurance
+                    ...car,
+                    timeLeft: remind(car.insurance)
                 }
             }))
             .catch((error) => {

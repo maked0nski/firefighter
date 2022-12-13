@@ -1,5 +1,5 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
-import {CreateObservationDto, ObservationWithSimDto, UpdateObservationDto} from "./dto";
+import {CreateObservationDto, UpdateObservationDto} from "./dto";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {PrismaService} from "../core/prisma.service";
 import {Exception} from "../exceptions";
@@ -10,7 +10,7 @@ export class ObservationService {
     constructor(private readonly prismaService: PrismaService) {
     }
 
-    create(dto: CreateObservationDto): Promise<ObservationWithSimDto> {
+    create(dto: CreateObservationDto): Promise<CreateObservationDto> {
         return Promise
             .resolve(this.prismaService.observation
                 .create({
@@ -19,7 +19,7 @@ export class ObservationService {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true,
+                        sim_cardNumber: true,
                         sim_card: true
                     }
                 }))
@@ -39,7 +39,7 @@ export class ObservationService {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true
+                        sim_cardNumber: true
                     }
                 }))
             .catch((error) => {
@@ -47,7 +47,7 @@ export class ObservationService {
             })
     }
 
-    findById(id: number): Promise<ObservationWithSimDto> {
+    findById(id: number): Promise<CreateObservationDto> {
         return Promise
             .resolve(this.prismaService.observation
                 .findFirstOrThrow({
@@ -56,7 +56,7 @@ export class ObservationService {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true
+                        sim_cardNumber: true
                     }
                 })
             )
@@ -69,20 +69,19 @@ export class ObservationService {
             )
     }
 
-    update(id: number, dto: UpdateObservationDto): Promise<ObservationWithSimDto> {
+    update(id: number, dto: UpdateObservationDto): Promise<CreateObservationDto> {
         return Promise
             .resolve(this.prismaService.observation
                 .update({
                     where: {id},
-                    data: {
-                        number: dto.number,
-                        contract: dto.contract,
-                    },
+                    data: dto,
                     select: {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true
+                        firmId: true,
+                        sim_card: true,
+                        sim_cardNumber: true
                     }
                 }))
             .catch((error) => {
@@ -98,7 +97,7 @@ export class ObservationService {
             })
     }
 
-    addSimCard(id: number, simId: number): Promise<ObservationWithSimDto> {
+    addSimCard(id: number, simId: number): Promise<CreateObservationDto> {
         return Promise
             .resolve(this.prismaService.observation
                 .update({
@@ -114,7 +113,7 @@ export class ObservationService {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true
+                        sim_cardNumber: true
                     }
                 }))
             .catch((error) => {
@@ -125,7 +124,7 @@ export class ObservationService {
             })
     }
 
-    deleteSimCard(id: number): Promise<ObservationWithSimDto> {
+    deleteSimCard(id: number): Promise<CreateObservationDto> {
         return Promise
             .resolve(this.prismaService.observation
                 .update({
@@ -140,7 +139,7 @@ export class ObservationService {
                         id: true,
                         number: true,
                         contract: true,
-                        sim_cardId: true
+                        sim_cardNumber: true
                     }
                 }))
             .catch((error) => {

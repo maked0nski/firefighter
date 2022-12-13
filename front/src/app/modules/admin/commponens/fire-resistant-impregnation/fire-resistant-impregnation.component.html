@@ -32,23 +32,17 @@
             <input matInput formControlName="area">
           </mat-form-field>
 
-<!--          <mat-form-field appearance="fill">-->
-<!--            <mat-label>Дата наступної повірки</mat-label>-->
-<!--            <input matInput formControlName="next_check">-->
-<!--          </mat-form-field>-->
-
           <mat-form-field appearance="fill">
             <mat-label>Дата наступної повірки</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="next_check">
             <mat-hint>MM-YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-            <!--            <input matInput formControlName="next_check">-->
           </mat-form-field>
 
           <mat-action-row>
-            <button mat-button color="primary" (click)="edit()">Зберегти зміни</button>
-            <button mat-button color="primary" *ngIf="impregnation" (click)="delete(impregnation.id)">Видалити</button>
+            <button mat-icon-button color="warn" *ngIf="impregnation" (click)="delete(impregnation.id)"><mat-icon>delete</mat-icon></button>
+            <button mat-icon-button color="primary" (click)="edit()"><mat-icon>edit</mat-icon></button>
           </mat-action-row>
 
         </form>

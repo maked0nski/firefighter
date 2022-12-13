@@ -52,7 +52,7 @@ export class SimCardService {
     //                 include: {
     //                     observation: {
     //                         select: {
-    //                             sim_cardId: false
+    //                             sim_cardNumber: false
     //                         }
     //                     }
     //                 }

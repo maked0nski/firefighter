@@ -74,22 +74,16 @@
             <input matInput formControlName="quantity">
           </mat-form-field>
 
-<!--          <mat-form-field appearance="fill">-->
-<!--            <mat-label>Дата наступної повірки</mat-label>-->
-<!--            <input matInput formControlName="next_check">-->
-<!--          </mat-form-field>-->
-
           <mat-form-field appearance="fill">
             <mat-label>Дата наступної повірки</mat-label>
             <input matInput  [matDatepicker]="picker" formControlName="next_check">
             <mat-hint>DD.MM.YYYY</mat-hint>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
-<!--            <input matInput formControlName="next_check">-->
           </mat-form-field>
 
           <mat-action-row>
-            <button mat-button color="primary" (click)="save()">Зберегти зміни</button>
+            <button mat-icon-button color="primary" (click)="save()"><mat-icon>save</mat-icon></button>
           </mat-action-row>
 
         </form>
