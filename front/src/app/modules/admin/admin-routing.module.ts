@@ -1,21 +1,23 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
-import {FuelCardsComponent} from "./commponens/fuel-cards/fuel-cards.component";
+import {
+  CarsComponent,
+  ClientDetailsComponent,
+  ClientsComponent,
+  FuelCardsComponent,
+  PositionComponent,
+  SimCardComponent,
+  UserProfileComponent, UsersComponent
+} from "./commponens";
 import {
   CarsResolver, ClientDetailsResolver,
   ClientsResolver,
   FuelCardResolverService,
   PositionResolver,
-  SimCardResolver
+  SimCardResolver, UsersResolver
 } from "./service/resolve";
-import {UserProfileComponent} from "./commponens/user-profile/user-profile.component";
-import {SimCardComponent} from "./commponens/sim-card/sim-card.component";
-import {PositionComponent} from "./commponens/position/position.component";
-import {ClientsComponent} from "./commponens/clients/clients.component";
-import {CarsComponent} from "./commponens/cars/cars.component";
-import {ClientDetailsComponent} from "./commponens/client-details/client-details.component";
+import {AdminLayoutComponent} from "./admin-layout/admin-layout.component";
 
 
 const routes: Routes = [
@@ -28,6 +30,7 @@ const routes: Routes = [
       {path: 'clients', component: ClientsComponent, resolve: {clients: ClientsResolver}},
       {path: 'clients/:id', component: ClientDetailsComponent, resolve:{allData:ClientDetailsResolver}},
       {path: 'cars', component: CarsComponent, resolve: {cars: CarsResolver}},
+      {path: 'users', component: UsersComponent, resolve: {cars: UsersResolver}},
     ]
   }
 ];

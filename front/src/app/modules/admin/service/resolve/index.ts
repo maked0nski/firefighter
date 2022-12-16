@@ -6,3 +6,4 @@ export * from './sim-card.resolver';
 export * from './position.resolver';
 export * from './clients.resolver';
 export * from './cars.resolver';
+export * from './users.resolver';

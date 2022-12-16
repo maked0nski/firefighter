@@ -1,7 +1,7 @@
 import {Component,  OnInit} from '@angular/core';
 import {IUser} from "../intesface";
 import {DataService, TokenStorageService} from "../../../services";
-import {UserProfileService} from "../service";
+import {UsersService} from "../service";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -16,7 +16,7 @@ export class AdminLayoutComponent implements OnInit {
   constructor(
     private tokenStorageService: TokenStorageService,
     private dataService: DataService,
-    private userProfileService: UserProfileService,
+    private usersService: UsersService,
     private activatedRoute: ActivatedRoute
   ) {
     activatedRoute.data.subscribe(value => {

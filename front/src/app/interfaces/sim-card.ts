@@ -4,8 +4,3 @@ export interface ISimCard {
   operator: string;
   active: boolean;
 }
-
-export interface IISimCard_list {
-  value: string;
-  viewValue: string;
-}

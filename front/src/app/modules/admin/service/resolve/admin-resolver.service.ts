@@ -1,25 +1,25 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 import {Observable} from "rxjs";
 
 import {IUser} from "../../intesface";
 import {TokenStorageService} from "../../../../services";
-import {UserProfileService} from "../user-profile.service";
+import {UsersService} from "../../service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class AdminResolverService  implements Resolve<IUser>{
+export class AdminResolverService implements Resolve<IUser> {
 
-  constructor(
-    private tokenStorageService: TokenStorageService,
-    private userProfileService: UserProfileService,
-  ) {
-  }
+    constructor(
+        private tokenStorageService: TokenStorageService,
+        private usersService: UsersService,
+    ) {
+    }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IUser> | Promise<IUser> | IUser {
-    const parseUser = JSON.parse(atob(this.tokenStorageService.getAccessToken().split('.')[1]));
-    return this.userProfileService.findById(parseUser.id)
-  }
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<IUser> | Promise<IUser> | IUser {
+        const parseUser = JSON.parse(atob(this.tokenStorageService.getAccessToken().split('.')[1]));
+        return this.usersService.findById(parseUser.id)
+    }
 
 }

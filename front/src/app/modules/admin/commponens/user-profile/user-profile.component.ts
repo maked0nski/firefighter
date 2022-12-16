@@ -1,13 +1,13 @@
 import {MatExpansionPanel} from "@angular/material/expansion";
 import {Component, Inject, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, UntypedFormControl, UntypedFormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
-import {UserProfileService} from "../../service";
+import {UsersService} from "../../service";
 import {DataService} from "../../../../services";
 import {IUser} from "../../intesface";
 import {DOCUMENT} from "@angular/common";
 import {finalize, first, fromEvent, mergeMap, Subject, takeUntil} from "rxjs";
-import {HttpEventType} from "@angular/common/http";
+
 
 @Component({
   selector: 'app-user-profile',
@@ -23,7 +23,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     public fb: FormBuilder,
-    private userProfileService: UserProfileService,
+    private usersService: UsersService,
     private dataService: DataService,
   ) {
     this
@@ -53,7 +53,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   update() {
-    this.userProfileService.update(this.user.id, this.form.getRawValue()).subscribe(value => {
+    this.usersService.update(this.user.id, this.form.getRawValue()).subscribe(value => {
       this.dataService.userStorage.next(value)
     })
     if (!this.pannel) return;  // перевіряю та закриваю панель редагування Карточок
@@ -87,7 +87,7 @@ export class UserProfileComponent implements OnInit {
           const uploadData = new FormData();
           uploadData.append('image', selectedFile, selectedFile.name);
 
-          return this.userProfileService.saveAvatar(this.user.id, uploadData)
+          return this.usersService.saveAvatar(this.user.id, uploadData)
 
         }),
         finalize(() => {

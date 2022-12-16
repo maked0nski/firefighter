@@ -1,5 +1,4 @@
 export * from "./fuel-card.service";
-export * from "./user-profile.service";
 export * from "./sim-card.service";
 export * from "./position.service";
 export * from "./clients.service";
@@ -9,3 +8,4 @@ export * from "./impregnation.service";
 export * from "./fire.extinguishers.service";
 export * from "./observation.service";
 export * from "./client-contact.service";
+export * from "./users.service";

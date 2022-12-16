@@ -11,8 +11,7 @@ import {urls} from "../../../constants";
 export class SimCardService {
 
 
-  constructor(private httpClient: HttpClient) {
-  }
+  constructor(private httpClient: HttpClient) {}
 
   findAll(): Observable<ISimCard[]> {
     return this.httpClient.get<ISimCard[]>(urls.sim_card);

@@ -1,5 +1,5 @@
-// export enum Car_fuelEnum {
-//     "Бензин",
-//     Дизель,
-//     Газ,
-// }
+export enum Car_fuelEnum {
+    "Бензин",
+    "Дизель",
+    "Газ",
+}
