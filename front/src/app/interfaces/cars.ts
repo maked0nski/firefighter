@@ -6,5 +6,6 @@ export interface ICar {
   year:string;
   passport_car: string,
   oddometr: number,
-  insurance: string
+  insurance: string,
+  timeLeft?: string;
 }

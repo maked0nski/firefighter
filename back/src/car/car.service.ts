@@ -3,7 +3,6 @@ import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {PrismaService} from "../core/prisma.service";
 import {CreateCarDto, UpdateCarDto} from "./dto";
 import {Exception} from "../exceptions";
-import {remind} from "../utils";
 
 @Injectable()
 export class CarService {
@@ -17,7 +16,7 @@ export class CarService {
                 .create({
                     data: {
                         ...carDto,
-                        timeLeft: remind(carDto.insurance)
+                        // timeLeft: remind(carDto.insurance)
                     }
                 }))
             .catch((error) => {
@@ -69,13 +68,13 @@ export class CarService {
             })
     };
 
-    update(id: number, car: Partial<UpdateCarDto>): Promise<CreateCarDto> {
+    update(id: number, car: Partial<UpdateCarDto>): Promise<UpdateCarDto> {
         return Promise.resolve(this.prismaService.car
             .update({
                 where: {id},
                 data: {
                     ...car,
-                    timeLeft: remind(car.insurance)
+                    // timeLeft: remind(car.insurance)
                 }
             }))
             .catch((error) => {

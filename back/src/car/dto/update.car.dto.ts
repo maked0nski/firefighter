@@ -43,4 +43,9 @@ export class UpdateCarDto {
     @IsOptional()
     public insurance?: string;
 
+    @ApiProperty({example: '5', description: 'id Юзераза за кимзакріплене авто', required:false})
+    @IsNumber()
+    @IsOptional()
+    public userId?: number;
+
 }

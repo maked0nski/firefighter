@@ -14,6 +14,7 @@ export class CarsService {
   }
 
   create(dto: ICar): Observable<ICar> {
+    console.log(dto)
     return this.httpClient.post<ICar>(urls.cars, dto);
   }
 
