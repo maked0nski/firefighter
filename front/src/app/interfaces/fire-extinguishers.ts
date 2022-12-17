@@ -4,7 +4,8 @@ export interface IFireExtinguishers {
   model: string,
   quantity: number,
   next_check: string,
-  firmId: number
+  firmId: number,
+  timeLeft:string
 }
 
 export interface Ifire_extinguishers {
