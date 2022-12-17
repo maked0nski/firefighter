@@ -133,7 +133,7 @@ export class SimCardComponent implements OnInit {
     }
   }
 
-  private openDialog(template: TemplateRef<any>) {
+  openDialog(template: TemplateRef<any>) {
     const dialogRef = this.dialog.open(template, {
       width: '400px'
     });

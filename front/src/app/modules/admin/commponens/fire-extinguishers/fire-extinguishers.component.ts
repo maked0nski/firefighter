@@ -1,10 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {DataService} from "../../../../services";
-import {IClient, Ifire_extinguishers, IFireExtinguishers} from "../../../../interfaces";
 import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
 import {MatExpansionPanel} from "@angular/material/expansion";
+import {MatTableDataSource} from "@angular/material/table";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import * as moment from "moment";
+
+import {IClient, Ifire_extinguishers, IFireExtinguishers} from "../../../../interfaces";
 import {FireExtinguishersService} from "../../service";
+import {DataService} from "../../../../services";
 
 @Component({
   selector: 'app-fire-extinguishers',
@@ -25,8 +27,6 @@ export class FireExtinguishersComponent implements OnInit {
   forUpdate: IFireExtinguishers | null;
 
   @ViewChild(MatExpansionPanel) pannel?: MatExpansionPanel;
-
-
 
   list_fire_extinguishers: Ifire_extinguishers[] = [
     {value: 'ВП-1', viewValue: 'ВП-1'},
@@ -52,7 +52,14 @@ export class FireExtinguishersComponent implements OnInit {
     this.dataService.clientStorage.subscribe(value => {
       this.client = value
       if (value?.fire_extinguishers) {
-        this.fire_extinguishers = value?.fire_extinguishers;
+        let list_fire_ext = value.fire_extinguishers
+        this.fire_extinguishers = list_fire_ext.map(val =>{
+          return {
+            ...val,
+            timeLeft: this.timeCalc(val.next_check)
+          }
+        });
+        console.log(this.fire_extinguishers)
       }
 
       this._createTable()
@@ -135,5 +142,10 @@ export class FireExtinguishersComponent implements OnInit {
         this.fire_extinguishers.splice(index,1);
         this._createTable();
       })
+  }
+
+  timeCalc(date: string) {
+    let str =  moment(date).locale("uk").endOf('day').fromNow();
+    return str.includes('тому') ? `Протерміновано ${str}` : `Повірити ${str}`
   }
 }

@@ -3,10 +3,10 @@ import {MatExpansionPanel} from "@angular/material/expansion";
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute} from "@angular/router";
+import * as moment from "moment";
 
 import {ICar} from "../../../../interfaces";
 import {CarsService} from "../../service";
-import {timeCalc} from "../../utils";
 
 @Component({
     selector: 'app-cars',
@@ -35,11 +35,10 @@ export class CarsComponent implements OnInit {
             this.list = tmp.map(val => {
                 return {
                     ...val,
-                    timeLeft: timeCalc(val.insurance)
+                    timeLeft: this.timeCalc(val.insurance)
                 }
             });
-            // this.list = value['cars']
-            console.log(this.list)
+
             this._createTable();
         })
         this._createForm()
@@ -84,7 +83,7 @@ export class CarsComponent implements OnInit {
             this.carsService
                 .create(this.form.getRawValue())
                 .subscribe(value => {
-                    this.list.push({...value, timeLeft: timeCalc(value.insurance)});
+                    this.list.push({...value, timeLeft: this.timeCalc(value.insurance)});
                     this.form.reset();
                     this._createTable();
                     this.pannel?.close()
@@ -95,7 +94,7 @@ export class CarsComponent implements OnInit {
                 .update(this.forUpdate.id, this.form.getRawValue())
                 .subscribe(value => {
                     let item = this.list.find(f => f.id === this.forUpdate?.id);
-                    Object.assign(item!, {...value, timeLeft: timeCalc(value.insurance)});
+                    Object.assign(item!, {...value, timeLeft: this.timeCalc(value.insurance)});
                     this.forUpdate = null;
                     this.form.reset();
                     this._createTable();
@@ -129,8 +128,9 @@ export class CarsComponent implements OnInit {
         })
     }
 
-    // timeCalc(date: string) {
-    //     moment().locale('uk')
-    //     return moment(date).locale("uk").endOf('day').fromNow()
-    // }
+    timeCalc(date: string) {
+        // let moment = require('moment');
+        let str =  moment(date).locale("uk").endOf('day').fromNow();
+        return str.includes('тому') ? `Закінчилась ${str}` : `Закінчиться ${str}`
+    }
 }

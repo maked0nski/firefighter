@@ -78,24 +78,18 @@
             <!-- Model column -->
             <ng-container matColumnDef="model">
                 <th mat-header-cell *matHeaderCellDef>Модель</th>
-                <td mat-cell *matCellDef="let element" (click)="edit(element)"> {{element.model}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.model}} </td>
             </ng-container>
 
             <!-- Insurance column -->
             <ng-container matColumnDef="insurance">
                 <th mat-header-cell *matHeaderCellDef>Страхівка дійсна до:</th>
 
-                <td mat-cell *matCellDef="let element" (click)="edit(element)">
-          <span>
-            {{element.insurance}}
-              <span class="{{element.timeLeft.includes('дні') ? 'red_Color' : 'normal'}}"
-                    *ngIf="element.timeLeft.includes('дні')">
-                  {{element.timeLeft.includes('тому') ? '   Закінчилась ' : '   Закінчиться '}}{{element.timeLeft}}
-              </span>
-          </span>
-
-                    <!--                    <span *ngIf="element.timeLeft.includes('day')" matBadge="{{element.timeLeft}}" matBadgeColor="warn"-->
-                    <!--                          matBadgeOverlap="false"></span>-->
+                <td mat-cell *matCellDef="let element">
+                     <span class="{{element.timeLeft.includes('дні') ? 'red_Color' : 'normal'}}"
+                           matTooltip={{element.timeLeft}}>
+                            {{element.insurance}}
+                    </span>
                 </td>
             </ng-container>
 
