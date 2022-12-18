@@ -31,7 +31,7 @@ export class FireResistantImpregnationComponent implements OnInit {
                     ...tmp,
                     timeLeft: this.timeCalc(tmp.next_check)
                 };
-                console.log(this.impregnation)
+                // console.log(this.impregnation)
             }
 
             this.clientId = value?.id;
