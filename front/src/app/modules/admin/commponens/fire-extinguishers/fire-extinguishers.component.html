@@ -20,7 +20,7 @@
             <ng-container matColumnDef="next_check">
                 <th mat-header-cell *matHeaderCellDef>Наступна дата повірки</th>
                 <td mat-cell *matCellDef="let element">
-                    <span class="{{element.timeLeft.includes('тому')||element.timeLeft.includes('днів') ? 'red_Color' : 'normal'}}"
+                    <span class="{{element.timeLeft.includes('тому')||element.timeLeft.includes('дні') ? 'red_Color' : 'normal'}}"
                           matTooltip={{element.timeLeft}}>
 <!--                        {{element.next_check}}-->
                         {{element.next_check.slice(0, 10)}}

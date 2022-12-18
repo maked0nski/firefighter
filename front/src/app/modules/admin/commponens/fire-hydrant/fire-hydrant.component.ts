@@ -32,7 +32,7 @@ export class FireHydrantComponent implements OnInit {
           timeLeft:this.timeCalc(tmp.next_check)
         }
       }
-      console.log(this.hydrant)
+      // console.log(this.hydrant)
       this.clientId = value?.id;
     })
     this._createForm()

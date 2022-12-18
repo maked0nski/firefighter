@@ -60,7 +60,7 @@ export class FireExtinguishersComponent implements OnInit {
                         timeLeft: this.timeCalc(val.next_check)
                     }
                 });
-                console.log(this.fire_extinguishers)
+                // console.log(this.fire_extinguishers)
             }
 
             this._createTable()
