@@ -1,50 +1,56 @@
 <mat-card>
-  <mat-card-content>
-    <mat-card-title>Даннні про пожежні рукави</mat-card-title>
+    <mat-card-content>
+        <mat-card-title>Даннні про пожежні рукави</mat-card-title>
 
-    <mat-accordion>
+        <mat-accordion>
 
-      <mat-expansion-panel hideToggle>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-           Кількість пожежних рукавів {{hydrant?.quantity}}
-          </mat-panel-title>
-          <mat-panel-description>
-            Дата наступної повірки {{hydrant?.next_check?.slice(0,10)}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-
-        <form [formGroup]="form" class="my-form">
-
-          <mat-form-field appearance="fill">
-            <mat-label>Кількість</mat-label>
-            <input matInput formControlName="quantity">
-          </mat-form-field>
-
-          <mat-form-field appearance="fill">
-            <mat-label>Дата наступної повірки</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="next_check">
-            <mat-hint>DD-MM-YYY</mat-hint>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-
-          <mat-action-row>
-
-            <button mat-icon-button color="warn" *ngIf="hydrant" (click)="delete(hydrant.id)"><mat-icon>delete</mat-icon></button>
-            <button mat-icon-button color="primary" (click)="edit()"><mat-icon>edit</mat-icon></button>
-
-          </mat-action-row>
-
-        </form>
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Кількість пожежних рукавів {{hydrant?.quantity}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <span class="{{hydrant?.timeLeft?.includes('тому')||hydrant?.timeLeft?.includes('днів') ? 'red_Color' : 'normal'}}"
+                              matTooltip={{hydrant?.timeLeft}}>
+                            Дата наступної повірки {{hydrant?.next_check?.slice(0, 10)}}
+                        </span>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
 
 
-      </mat-expansion-panel>
+                <form [formGroup]="form" class="my-form">
 
-    </mat-accordion>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Кількість</mat-label>
+                        <input matInput formControlName="quantity">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Дата наступної повірки</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="next_check">
+                        <mat-hint>DD.MM.YYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-action-row>
+
+                        <button mat-icon-button color="warn" *ngIf="hydrant" (click)="delete(hydrant.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" (click)="edit()">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+
+                    </mat-action-row>
+
+                </form>
 
 
+            </mat-expansion-panel>
 
-  </mat-card-content>
+        </mat-accordion>
+
+
+    </mat-card-content>
 </mat-card>

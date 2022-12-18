@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
 import {UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatAccordion} from "@angular/material/expansion";
 
 import {IFireHydrantUpdate} from "../../../../interfaces";
 import {DataService} from "../../../../services";
 import {FireHydrantService} from "../../service";
+import * as moment from "moment/moment";
 
 @Component({
   selector: 'app-fire-hydrant',
@@ -24,7 +25,14 @@ export class FireHydrantComponent implements OnInit {
     private fireHydrantService: FireHydrantService
   ) {
     this.dataService.clientStorage.subscribe(value => {
-      this.hydrant = value?.fire_hydrant;
+      let tmp = value?.fire_hydrant;
+      if (tmp){
+        this.hydrant={
+          ...tmp,
+          timeLeft:this.timeCalc(tmp.next_check)
+        }
+      }
+      console.log(this.hydrant)
       this.clientId = value?.id;
     })
     this._createForm()
@@ -41,6 +49,7 @@ export class FireHydrantComponent implements OnInit {
   }
 
   edit() {
+
     if (this.hydrant && this.clientId) {
       let hydrant = {
         id: Number(this.hydrant?.id),
@@ -53,7 +62,7 @@ export class FireHydrantComponent implements OnInit {
         .update(hydrant.id, hydrant)
         .subscribe(value => {
 
-          Object.assign(this.hydrant!, value);
+          Object.assign(this.hydrant!, {...value, timeLeft: this.timeCalc(value.next_check)});
           this.accordion.closeAll()
         })
     } else {
@@ -66,7 +75,7 @@ export class FireHydrantComponent implements OnInit {
       this.fireHydrantService
         .create(hydrant)
         .subscribe(value => {
-          this.hydrant = value;
+          this.hydrant = {...value, timeLeft: this.timeCalc(value.next_check)};
           this.accordion.closeAll()
         })
 
@@ -79,5 +88,10 @@ export class FireHydrantComponent implements OnInit {
       this.form.reset();
       this.accordion.closeAll();
     })
+  }
+
+  timeCalc(date: string) {
+    let str = moment(date).locale("uk").endOf('day').fromNow();
+    return str.includes('тому') ? `Протерміновано ${str}` : `Повірити ${str}`
   }
 }

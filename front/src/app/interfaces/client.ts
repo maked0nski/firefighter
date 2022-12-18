@@ -15,7 +15,7 @@ export interface IClient {
   service_contract: string;
   contact_person?: IClientContact[];
   fire_extinguishers?: IFireExtinguishers[];
-  fire_hydrant: IFireHydrantUpdate;
+  fire_hydrant?: IFireHydrantUpdate;
   fire_resistant_impregnation: IFireResistantImpregnation;
   observation?: IObservation
 }
