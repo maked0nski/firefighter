@@ -10,7 +10,7 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
     constructor() {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: "Wery_Strong_RT_SECRET_KeY",
+            secretOrKey: process.env.ACCESS_TOKEN_SECRET,
             passReqToCallback: true,
         });
     }

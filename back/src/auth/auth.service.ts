@@ -110,12 +110,12 @@ export class AuthService {
         };
         const [at, rt] = await Promise.all([
             this.jwtService.signAsync(jwtPayload, {
-                secret: "Wery_Strong_AT_SECRET_KeY",
-                expiresIn: "1h"
+                secret: process.env.ACCESS_TOKEN_SECRET,
+                expiresIn: process.env.ACCESS_TOKEN_EXPIRES,
             }),
             this.jwtService.signAsync(jwtPayload, {
-                secret: "Wery_Strong_RT_SECRET_KeY",
-                expiresIn: '2d'
+                secret: process.env.REFRESH_TOKEN_SECRET,
+                expiresIn: process.env.REFRESH_TOKEN_EXPIRES
             })
         ]);
         return {
