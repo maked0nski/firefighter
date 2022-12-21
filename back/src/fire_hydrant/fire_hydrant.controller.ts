@@ -1,6 +1,6 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 
 import {CreateFireHydrantDto, UpdateFireHydrantDto} from "./dto";
 import {SWAGGER_EXAMPLE_FIRE_HYDRANT} from "../utils/example";
@@ -10,7 +10,7 @@ import {Exception} from "../exceptions";
 
 @ApiTags('Пожежні гідранти')
 @Controller('hydrant')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class FireHydrantController {
     constructor(private fireHydrantService: FireHydrantService) {
     }

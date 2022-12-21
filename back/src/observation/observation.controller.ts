@@ -1,8 +1,8 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {ObservationService} from "./observation.service";
-import {CreateObservationDto, ObservationWithSimDto, UpdateObservationDto} from "./dto";
+import {CreateObservationDto, UpdateObservationDto} from "./dto";
 import {CustomOkResponse} from "../utils";
 import {Exception} from "../exceptions";
 import {
@@ -12,7 +12,7 @@ import {
 
 @ApiTags('Карточка спостереження')
 @Controller('observation')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class ObservationController {
 
     constructor(private observationService: ObservationService) {

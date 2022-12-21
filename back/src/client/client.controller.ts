@@ -5,7 +5,7 @@ import {CreateClientDto, UpdateClientDto} from "./dto";
 import {ClientService} from "./client.service";
 import {CustomOkResponse} from "../utils";
 import {Exception} from "../exceptions";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {
     SWAGGER_CLIENT_BODY_EXAMPLE,
     SWAGGER_CLIENT_EXAMPLE, SWAGGER_CLIENT_LIST_EXAMPLE
@@ -14,7 +14,7 @@ import {
 
 @ApiTags('Фірми клієнти')
 @Controller('client')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class ClientController {
 
     constructor(private clientService:ClientService) {

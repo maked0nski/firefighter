@@ -13,7 +13,7 @@ import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from '
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
 
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {UserService} from "./user.service";
 import {UpdateUserDto} from "./dto";
 import {CustomOkResponse, editFileName, imageFileFilter} from "../utils";
@@ -31,7 +31,7 @@ import {Public} from "../core/decorators";
 
 @ApiTags('Users')
 @Controller('users')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class UserController {
 
     constructor(

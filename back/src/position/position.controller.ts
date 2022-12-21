@@ -3,7 +3,7 @@ import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "
 
 import {PositionService} from "./position.service";
 import {PositionDto} from "./dto";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {CustomOkResponse} from "../utils";
 import {SWAGGER_EXAMPLE_POSITION, SWAGGER_EXAMPLE_POSITION_LIST} from "../utils/example";
 import {Exception} from "../exceptions";
@@ -11,7 +11,7 @@ import {Exception} from "../exceptions";
 
 @ApiTags('Positions')
 @Controller('position')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class PositionController {
 
     constructor(private positionService: PositionService) {

@@ -1,8 +1,8 @@
+import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {ForbiddenException, Injectable} from '@nestjs/common';
 import {JwtService} from "@nestjs/jwt";
 import * as argon from 'argon2';
 
-import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {PrismaService} from "../core/prisma.service";
 import {AuthUserDto} from "./dto";
 import {JwtPayload, Tokens} from "./types";
@@ -111,11 +111,11 @@ export class AuthService {
         const [at, rt] = await Promise.all([
             this.jwtService.signAsync(jwtPayload, {
                 secret: "Wery_Strong_AT_SECRET_KeY",
-                expiresIn: '2d'
+                expiresIn: "1h"
             }),
             this.jwtService.signAsync(jwtPayload, {
                 secret: "Wery_Strong_RT_SECRET_KeY",
-                expiresIn: '7d'
+                expiresIn: '2d'
             })
         ]);
         return {

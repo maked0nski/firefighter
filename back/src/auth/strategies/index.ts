@@ -1,2 +1,2 @@
-export * from './rt.strategy';
-export * from './at.strategy';
+export * from './refreshToken.strategy';
+export * from './accessToken.strategy';

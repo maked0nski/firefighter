@@ -41,7 +41,7 @@ export class ClientDetailsComponent implements OnInit {
     }
 
 
-    _createForm(): void {
+    _createForm(): void {    //ToDo Написати валідатори на всі форми
         this.clientForm = new FormGroup({
             name: new FormControl(this.client.name),
             city: new FormControl(this.client.city),

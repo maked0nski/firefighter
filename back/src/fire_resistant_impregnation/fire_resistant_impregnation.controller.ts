@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
 
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {FireResistantImpregnationService} from "./fire_resistant_impregnation.service";
 import {Exception} from "../exceptions";
 import {CustomOkResponse} from "../utils";
@@ -13,7 +13,7 @@ import {CreateFireResistantImpregnationDto,UpdateFireResistantImpregnationDto} f
 
 @ApiTags('Просочення конструкцій вогнетривкою речовиною')
 @Controller('fire_resistant_impregnation')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class FireResistantImpregnationController {
     constructor(private fireResistantImpregnationService: FireResistantImpregnationService) {
     }

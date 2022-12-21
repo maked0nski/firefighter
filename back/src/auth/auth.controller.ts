@@ -4,7 +4,7 @@ import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 import {AuthUserDto} from "./dto";
 import {AuthService} from "./auth.service";
 import {Tokens} from "./types";
-import {AtGuard, RtGuard} from "../core/guards";
+import {AccessTokenGuard, RefreshTokenGuard} from "../core/guards";
 import {GetCurrentUserDecorator, GetCurrentUserIdDecorator, Public} from "../core/decorators";
 import {GetCurrentUserRoleDecorator} from "../core/decorators";
 
@@ -51,7 +51,7 @@ export class AuthController {
     @Post('logout')
     @ApiOperation({summary: 'Logout user'})
     @ApiOkResponse({status: HttpStatus.OK, schema: {example: true}})
-    @UseGuards(AtGuard)
+    @UseGuards(AccessTokenGuard)
     @HttpCode(HttpStatus.OK)
     logout(@GetCurrentUserIdDecorator() userId: number): Promise<boolean> {
         return this.authService.logout(userId);
@@ -62,22 +62,23 @@ export class AuthController {
     @ApiOkResponse({
         status: HttpStatus.OK, schema: {
             example: {
-                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoidXNlcjIwMUBnbWFpbC5jb20iLCJpYXQiOjE2NTU4NTEzODQsImV4cCI6MTY1NTg1MjI4NH0.KlgbHUF76K8PyD0QYDh1xgEcsB_HzfgD21X-aTlytYc",
-                "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImVtYWlsIjoidXNlcjIwMUBnbWFpbC5jb20iLCJpYXQiOjE2NTU4NTEzODQsImV4cCI6MTY1NjQ1NjE4NH0.bSJUZGZG-Z1uMP_z8uIWGEYQK-oonGlKDmnETI8ISGo"
+                "access_token": "eyJhbGciOiJIUzI1NiIpXVCJ9.eyJpZCI6joidXNlcjIwbWFpbC5jb20iLCJpYXQiOjE2NTU4NTEzODQsImV4cCI6MTY1NTg1MjI4NH0.Klgbh1xgEcsB_HzfgD21X-aTlytYc",
+                "refresh_token": "eyJhbGciOiJIUzI1NiIsInpXVCJ9.eyJpZIjoidXNlcjIwbWFpbC5jb20iLCJpYXQiOjE2NTU4NTEzODQsImV4cCI6MTY1NjQ1NjE4NH0.bSJUZGZG-Z1uMGlKDmnETI8ISGo"
             }
         }
     })
-    @UseGuards(RtGuard)
+    @UseGuards(RefreshTokenGuard)
     @Post('refresh')
     @HttpCode(HttpStatus.OK)
     refreshTokens(
         @GetCurrentUserIdDecorator() userId: number,
         @GetCurrentUserDecorator('refreshToken') refreshToken: string
     ): Promise<Tokens> {
+        console.log("userId-", userId, "refreshToken:",refreshToken)
         return this.authService.refreshTokens(userId, refreshToken);
     }
 
-    @UseGuards(AtGuard)
+    @UseGuards(AccessTokenGuard)
     @HttpCode(HttpStatus.OK)
     @Post('role')
     getRoleByTokken(@GetCurrentUserRoleDecorator() role: string,) {

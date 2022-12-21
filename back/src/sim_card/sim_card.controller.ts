@@ -6,12 +6,12 @@ import {CreateSimCardDto, UpdateSimCardDto} from "./dto";
 import {SimCardService} from "./sim_card.service";
 import {CustomOkResponse} from "../utils";
 import {Exception} from "../exceptions";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 
 
 @ApiTags('Sim card list')
 @Controller('sim_card')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class SimCardController {
 
     constructor(private simCardService: SimCardService) {

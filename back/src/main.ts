@@ -18,7 +18,7 @@ async function bootstrap() {
     });
     app.useGlobalPipes(new ValidationPipe());
     // const reflector = new Reflector();
-    // app.useGlobalGuards(new AtGuard(reflector));
+    // app.useGlobalGuards(new AccessTokenGuard(reflector));
     const config = new DocumentBuilder()
         .setTitle('Firefighter NestJs API')
         .setDescription('API Портала пожежної служби')

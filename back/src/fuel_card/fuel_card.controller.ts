@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {FuelCardService} from "./fuel_card.service";
 import {CreateFuelCardDto, UpdateFuelCardDto} from "./dto";
 import {CustomOkResponse} from "../utils";
@@ -13,7 +13,7 @@ import {Exception} from "../exceptions";
 
 @ApiTags('Fuel cards')
 @Controller('fuel_card')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class FuelCardController {
 
     constructor(private fuelCardService: FuelCardService) {

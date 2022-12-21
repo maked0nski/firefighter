@@ -15,7 +15,7 @@ import {ClientModule} from './client/client.module';
 import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {CarModule} from './car/car.module';
-import {AtGuard} from "./core/guards";
+import {AccessTokenGuard} from "./core/guards";
 
 
 @Module({
@@ -43,7 +43,8 @@ import {AtGuard} from "./core/guards";
     providers: [
         {
             provide: APP_GUARD,
-            useClass: AtGuard,
+            // useClass: AccessTokenGuard,
+            useClass: AccessTokenGuard,
         },
     ],
 })

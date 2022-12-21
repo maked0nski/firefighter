@@ -5,11 +5,12 @@ import {Injectable} from "@nestjs/common";
 import {JwtPayload} from "../types";
 
 @Injectable()
-export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
+export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     constructor() {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: "Wery_Strong_AT_SECRET_KeY",
+            // secretOrKey: process.env.JWT.ACCESS_TOKEN_SECRET
         });
     }
 

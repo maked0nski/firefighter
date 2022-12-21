@@ -5,7 +5,7 @@ import {CreateCarDto, UpdateCarDto} from "./dto";
 import {CustomOkResponse} from "../utils";
 import {CarService} from "./car.service";
 import {Exception} from "../exceptions";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../core/guards";
 import {
     SWAGGER_EXAMPLE_CAR, SWAGGER_EXAMPLE_CARS_LIST,
 } from "../utils/example";
@@ -13,7 +13,7 @@ import {
 
 @ApiTags('Cars')
 @Controller('cars')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class CarController {
     constructor(private readonly carService: CarService) {
     }
