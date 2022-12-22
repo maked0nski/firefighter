@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-modules/mailer": "^1.8.1",
     "@nestjs/class-validator": "^0.13.4",
     "@nestjs/common": "^9.2.1",
     "@nestjs/config": "^2.2.0",
@@ -37,6 +38,7 @@
     "cross-env": "^7.0.3",
     "imagekit": "^4.1.2",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.8.0",
     "passport": "^0.6.0",
     "passport-jwt": "*",
     "reflect-metadata": "^0.1.13",
@@ -52,6 +54,7 @@
     "@types/jest": "29.2.3",
     "@types/multer": "^1.4.7",
     "@types/node": "^18.11.10",
+    "@types/nodemailer": "^6.4.7",
     "@types/passport-jwt": "3.0.7",
     "@types/supertest": "2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.45.0",

@@ -1,7 +1,8 @@
-import {Module} from '@nestjs/common';
-import {ConfigModule} from "@nestjs/config";
-import {APP_GUARD} from "@nestjs/core";
 import {MulterModule} from "@nestjs/platform-express";
+import {ConfigModule, ConfigService} from "@nestjs/config";
+import {APP_GUARD} from "@nestjs/core";
+import {Module} from '@nestjs/common';
+import {MailerModule} from "@nestjs-modules/mailer";
 
 import {FireResistantImpregnationModule} from './fire_resistant_impregnation/fire_resistant_impregnation.module';
 import {FireExtinguishersModule} from './fire_extinguishers/fire_extinguishers.module';
@@ -12,10 +13,12 @@ import {FuelCardModule} from './fuel_card/fuel_card.module';
 import {PositionModule} from './position/position.module';
 import {SimCardModule} from './sim_card/sim_card.module';
 import {ClientModule} from './client/client.module';
+import {AccessTokenGuard} from "./core/guards";
 import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {CarModule} from './car/car.module';
-import {AccessTokenGuard} from "./core/guards";
+import {getMailConfig} from "./configs/mail.config";
+
 
 
 @Module({
@@ -38,7 +41,12 @@ import {AccessTokenGuard} from "./core/guards";
         ObservationModule,
         MulterModule.register({
             dest: './files',
-        })
+        }),
+        MailerModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: getMailConfig,
+        }),
     ],
     providers: [
         {

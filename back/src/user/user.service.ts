@@ -1,16 +1,21 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
-
-import { PrismaService } from '../core/prisma.service';
-import {UpdateUserDto} from "./dto";
-import {Exception} from "../exceptions";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
+import {PrismaService} from '../core/prisma.service';
+import {MailerService} from "@nestjs-modules/mailer";
+import { join } from 'path';
+
+import {Exception} from "../exceptions";
+import {UpdateUserDto} from "./dto";
 import {UserType} from "./type";
 
 
 @Injectable()
 export class UserService {
 
-    constructor(private prismaService: PrismaService) {
+    constructor(
+        private prismaService: PrismaService,
+        private readonly mailerService: MailerService
+    ) {
     }
 
     async getAll() {
@@ -31,7 +36,7 @@ export class UserService {
 
     async getAllWithCar(): Promise<UserType[]> {
         return this.prismaService.user.findMany({
-            where:{
+            where: {
                 car: {
                     isNot: null
                 }
@@ -53,7 +58,7 @@ export class UserService {
 
     async getAllWithPosition(): Promise<UserType[]> {
         return await this.prismaService.user.findMany({
-            where:{
+            where: {
                 position: {
                     isNot: null
                 }
@@ -75,9 +80,9 @@ export class UserService {
 
     async getAllWithCarAndPosition(): Promise<UserType[]> {
         return await this.prismaService.user.findMany({
-            where:{
-                position:{isNot:null},
-                car:{isNot:null}
+            where: {
+                position: {isNot: null},
+                car: {isNot: null}
             },
             select: {
                 id: true,
@@ -298,4 +303,28 @@ export class UserService {
         }
 
     }
+
+    async sendConfirmMail(user: UserType) {
+        const urlConfirmAddress = "temp address";
+
+        // Відправка пошти
+        return await this.mailerService
+            .sendMail({
+                to: user.email,
+                subject: 'Підтвердження реєстрації',
+                template: join(__dirname, '/../templates', 'confirmReg'),
+                context: {
+                    id: user.id,
+                    username: user.name,
+                    urlConfirmAddress,
+                },
+            })
+            .catch((e) => {
+                throw new HttpException(
+                    `Помилка роботи пошти: ${JSON.stringify(e)}`,
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                );
+            });
+    }
+
 }
