@@ -3,10 +3,10 @@ import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "
 
 import {PositionService} from "./position.service";
 import {PositionDto} from "./dto";
-import {AccessTokenGuard} from "../core/guards";
-import {CustomOkResponse} from "../utils";
-import {SWAGGER_EXAMPLE_POSITION, SWAGGER_EXAMPLE_POSITION_LIST} from "../utils/example";
-import {Exception} from "../exceptions";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {SWAGGER_EXAMPLE_POSITION, SWAGGER_EXAMPLE_POSITION_LIST} from "../__utils/example";
+import {Exception} from "../__exceptions";
 
 
 @ApiTags('Positions')

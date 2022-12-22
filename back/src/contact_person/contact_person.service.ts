@@ -1,8 +1,8 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {CreateContactPersonDto, UpdateContactPersonDto} from "./dto";
-import {PrismaService} from "../core/prisma.service";
+import {PrismaService} from "../__core/prisma.service";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {Exception} from "../exceptions";
+import {Exception} from "../__exceptions";
 
 
 @Injectable()

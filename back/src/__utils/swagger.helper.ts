@@ -1,7 +1,7 @@
 import {HttpStatus} from '@nestjs/common';
 import {ApiBadRequestResponse, ApiOkResponse} from '@nestjs/swagger';
 
-import {Exception} from '../exceptions';
+import {Exception} from '../__exceptions';
 
 export function CustomExceptionResponse(config: { statusCode?: number; exceptionText: string; description?: string }) {
     const {statusCode = HttpStatus.BAD_REQUEST, exceptionText, description} = config;

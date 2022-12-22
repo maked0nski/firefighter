@@ -2,7 +2,7 @@ import {Module} from '@nestjs/common';
 
 import {FuelCardService} from './fuel_card.service';
 import {FuelCardController} from './fuel_card.controller';
-import {PrismaService} from "../core/prisma.service";
+import {PrismaService} from "../__core/prisma.service";
 
 @Module({
     imports: [],

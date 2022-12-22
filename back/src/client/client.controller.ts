@@ -3,13 +3,13 @@ import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiPar
 
 import {CreateClientDto, UpdateClientDto} from "./dto";
 import {ClientService} from "./client.service";
-import {CustomOkResponse} from "../utils";
-import {Exception} from "../exceptions";
-import {AccessTokenGuard} from "../core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
+import {AccessTokenGuard} from "../__core/guards";
 import {
     SWAGGER_CLIENT_BODY_EXAMPLE,
     SWAGGER_CLIENT_EXAMPLE, SWAGGER_CLIENT_LIST_EXAMPLE
-} from "../utils/example";
+} from "../__utils/example";
 
 
 @ApiTags('Фірми клієнти')

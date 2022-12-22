@@ -1,10 +1,10 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {PrismaService} from '../core/prisma.service';
+import {PrismaService} from '../__core/prisma.service';
 import {MailerService} from "@nestjs-modules/mailer";
 import { join } from 'path';
 
-import {Exception} from "../exceptions";
+import {Exception} from "../__exceptions";
 import {UpdateUserDto} from "./dto";
 import {UserType} from "./type";
 

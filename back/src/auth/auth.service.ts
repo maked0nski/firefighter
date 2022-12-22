@@ -3,9 +3,10 @@ import {ForbiddenException, Injectable} from '@nestjs/common';
 import {JwtService} from "@nestjs/jwt";
 import * as argon from 'argon2';
 
-import {PrismaService} from "../core/prisma.service";
-import {AuthUserDto} from "./dto";
+import {PrismaService} from "../__core/prisma.service";
 import {JwtPayload, Tokens} from "./types";
+import {configs} from "../__configs";
+import {AuthUserDto} from "./dto";
 
 
 @Injectable()
@@ -110,12 +111,12 @@ export class AuthService {
         };
         const [at, rt] = await Promise.all([
             this.jwtService.signAsync(jwtPayload, {
-                secret: process.env.ACCESS_TOKEN_SECRET,
-                expiresIn: process.env.ACCESS_TOKEN_EXPIRES,
+                secret: configs.ACCESS_TOKEN_SECRET,
+                expiresIn: configs.ACCESS_TOKEN_EXPIRES,
             }),
             this.jwtService.signAsync(jwtPayload, {
-                secret: process.env.REFRESH_TOKEN_SECRET,
-                expiresIn: process.env.REFRESH_TOKEN_EXPIRES
+                secret: configs.REFRESH_TOKEN_SECRET,
+                expiresIn: configs.REFRESH_TOKEN_EXPIRES
             })
         ]);
         return {

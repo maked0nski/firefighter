@@ -1,12 +1,12 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
-import {AccessTokenGuard} from "../core/guards";
+import {AccessTokenGuard} from "../__core/guards";
 
 import {CreateFireHydrantDto, UpdateFireHydrantDto} from "./dto";
-import {SWAGGER_EXAMPLE_FIRE_HYDRANT} from "../utils/example";
+import {SWAGGER_EXAMPLE_FIRE_HYDRANT} from "../__utils/example";
 import {FireHydrantService} from "./fire_hydrant.service";
-import {CustomOkResponse} from "../utils";
-import {Exception} from "../exceptions";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 
 @ApiTags('Пожежні гідранти')
 @Controller('hydrant')

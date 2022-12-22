@@ -1,8 +1,8 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
 import {CreateObservationDto, UpdateObservationDto} from "./dto";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {PrismaService} from "../core/prisma.service";
-import {Exception} from "../exceptions";
+import {PrismaService} from "../__core/prisma.service";
+import {Exception} from "../__exceptions";
 
 @Injectable()
 export class ObservationService {

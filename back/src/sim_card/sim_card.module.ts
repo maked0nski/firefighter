@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import {PrismaService} from "../core/prisma.service";
+import {PrismaService} from "../__core/prisma.service";
 import { SimCardController } from './sim_card.controller';
 import { SimCardService } from './sim_card.service';
 

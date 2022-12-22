@@ -13,10 +13,10 @@ import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from '
 import {FileInterceptor} from "@nestjs/platform-express";
 import {diskStorage} from "multer";
 
-import {AccessTokenGuard} from "../core/guards";
+import {AccessTokenGuard} from "../__core/guards";
 import {UserService} from "./user.service";
 import {UpdateUserDto} from "./dto";
-import {CustomOkResponse, editFileName, imageFileFilter} from "../utils";
+import {CustomOkResponse, editFileName, imageFileFilter} from "../__utils";
 import {
     SWAGGER_EXAMPLE_USER,
     SWAGGER_EXAMPLE_USER_BY_ID,
@@ -24,10 +24,10 @@ import {
     SWAGGER_EXAMPLE_USERS_LIST_WITH_CAR,
     SWAGGER_EXAMPLE_USERS_LIST_WITH_CAR_AND_POSITION,
     SWAGGER_EXAMPLE_USERS_LIST_WITH_POSITION,
-} from "../utils/example";
-import {Exception} from "../exceptions";
+} from "../__utils/example";
+import {Exception} from "../__exceptions";
 import {UserType} from "./type";
-import {Public} from "../core/decorators";
+import {Public} from "../__core/decorators";
 
 @ApiTags('Users')
 @Controller('users')

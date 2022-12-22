@@ -1,7 +1,7 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
-import {PrismaService} from "../core/prisma.service";
+import {PrismaService} from "../__core/prisma.service";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {Exception} from "../exceptions";
+import {Exception} from "../__exceptions";
 import {CreateFireResistantImpregnationDto, UpdateFireResistantImpregnationDto} from "./dto";
 
 @Injectable()
