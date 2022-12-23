@@ -31,11 +31,8 @@ async function bootstrap() {
     // const reflector = new Reflector();
     // app.useGlobalGuards(new AccessTokenGuard(reflector));
 
-
-    console.log(swaggerConfig)
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api', app, document);
-
 
     const prismaService = app.get(PrismaService);
     await prismaService.enableShutdownHooks(app)
