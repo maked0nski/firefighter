@@ -5,7 +5,7 @@ export const configs = {
     ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || "1h",
 
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || "RefreshToken_SECRET_KeY",
-    REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "2h",
+    REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "2 days",
 
     MAIL_TRANSPORT: process.env.MAIL_TRANSPORT || "smtps://useYandex@yandex.ru:password@smtp.yandex.ru",
     MAIL_FROM_NAME: process.env.MAIL_FROM_NAME || "WebWork",

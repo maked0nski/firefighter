@@ -7,8 +7,6 @@ import {PrismaService} from "../__core/prisma.service";
 import {JwtPayload, Tokens} from "./types";
 import {configs} from "../__configs";
 import {AuthUserDto} from "./dto";
-
-
 @Injectable()
 export class AuthService {
 
@@ -20,7 +18,7 @@ export class AuthService {
 
     async registration(userDto: AuthUserDto): Promise<Tokens> {
 
-        const hash = await argon.hash(userDto.password)
+        const hash = await argon.hash(userDto.password, )
 
         const user = await this.prismaService.user
             .create({
@@ -113,10 +111,12 @@ export class AuthService {
             this.jwtService.signAsync(jwtPayload, {
                 secret: configs.ACCESS_TOKEN_SECRET,
                 expiresIn: configs.ACCESS_TOKEN_EXPIRES,
+                // algorithm: 'RS256',
             }),
             this.jwtService.signAsync(jwtPayload, {
                 secret: configs.REFRESH_TOKEN_SECRET,
-                expiresIn: configs.REFRESH_TOKEN_EXPIRES
+                expiresIn: configs.REFRESH_TOKEN_EXPIRES,
+                // algorithm: 'RS256',
             })
         ]);
         return {
