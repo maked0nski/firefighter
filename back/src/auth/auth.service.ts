@@ -1,24 +1,103 @@
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {ForbiddenException, Injectable} from '@nestjs/common';
+import {SignOptions} from 'jsonwebtoken';
 import {JwtService} from "@nestjs/jwt";
-import * as argon from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 import {PrismaService} from "../__core/prisma.service";
+import {MailService} from "../mail/mail.service";
+import {UserService} from "../user/user.service";
 import {JwtPayload, Tokens} from "./types";
+import {UserType} from "../user/type";
 import {configs} from "../__configs";
+import * as process from "process";
 import {AuthUserDto} from "./dto";
+import {hash} from "../__utils";
+
+
 @Injectable()
 export class AuthService {
+    private readonly clientAppUrl: string;
 
     constructor(
         private jwtService: JwtService,
         private prismaService: PrismaService,
+        private userService: UserService,
+        private mailService: MailService,
     ) {
+        this.clientAppUrl = configs.FrontEnd_APP_URL
     }
 
-    async registration(userDto: AuthUserDto): Promise<Tokens> {
+    async sendConfirmation(user: Partial<UserType>) {
+        // const expiresIn = 60 * 60 * 24; // 24 hours
+        // let accessToken = process.env.ACCESS_TOKEN_SECRET;
 
-        const hash = await argon.hash(userDto.password, )
+        const option = {
+            secret: process.env.ACCESS_TOKEN_SECRET,
+            expiresIn: 60 * 60 * 24 // 24 hours
+        }
+
+        const tokenPayload = {
+            id: user.id,
+            status: user.status,
+            role: user.role
+        }
+        // const verificationCodeAt = moment()
+        //     .add(1, 'day')
+        //     .toISOString();
+
+        const verificationCode = await this.generateToken(tokenPayload, option);
+        console.log("verificationCode: ", verificationCode)
+        // const urlConfirmAddress = `${this.clientAppUrl}/auth/confirm?token=${verificationCode}`;
+        //
+        // console.log(urlConfirmAddress)
+
+
+        await this.userService.updateUser(user.id, {verificationCode});
+
+        return await this.mailService.sendUserConfirmation(user, verificationCode)
+
+        // return await this.mailService.sendMail({
+        //     to: user.email,
+        //     subject: 'Підтверження реєстрації на сайті пожежного спостереження',
+        //     template: join(__dirname, '/../__templates', 'confirmReg'),
+        //     context: {
+        //         id: user.id,
+        //         username: user?.name,
+        //         urlConfirmAddress,
+        //     },
+        // })
+        //     .catch((e) => {
+        //         throw new HttpException(
+        //             `Помилка роботи пошти: ${JSON.stringify(e)}`,
+        //             HttpStatus.UNPROCESSABLE_ENTITY,
+        //         );
+        //     });
+
+    }
+
+    private async generateToken(data, options?: SignOptions): Promise<string> {
+        return this.jwtService.signAsync(data, options);
+    }
+
+    async signUp(userDto: AuthUserDto): Promise<boolean> {
+
+        const password = await hash(userDto.password)
+        const user = await this.prismaService.user
+            .create({
+                data: {
+                    email: userDto.email,
+                    password,
+                }
+            })
+        await this.sendConfirmation(user);
+        return true
+    }
+
+
+    async registration(userDto: AuthUserDto): Promise<Tokens> {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(userDto.password, salt);
 
         const user = await this.prismaService.user
             .create({
@@ -35,7 +114,7 @@ export class AuthService {
                 }
                 throw error;
             })
-        const tokens = await this.getTokens(user.id, user.email, user.role);
+        const tokens = await this.createTokens(user.id, user.email, user.role);
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
@@ -48,10 +127,11 @@ export class AuthService {
         })
         if (!user) throw  new ForbiddenException("Access Denied");
 
-        const passMatches = await argon.verify(user.password, userDto.password);
+        const passMatches = await bcrypt.compare(user.password, userDto.password);
+
         if (!passMatches) throw  new ForbiddenException("Access Denied");
 
-        const tokens = await this.getTokens(user.id, user.email, user.role);
+        const tokens = await this.createTokens(user.id, user.email, user.role);
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
@@ -80,44 +160,48 @@ export class AuthService {
 
         if (!user || !user.refresh_token) throw new ForbiddenException("Access Denied");
 
-        const rtMatches = await argon.verify(user.refresh_token, rt);
+        const rtMatches = await bcrypt.compare(user.refresh_token, rt);
         if (!rtMatches) throw new ForbiddenException("Access Denied");
 
-        const tokens = await this.getTokens(user.id, user.email, user.role);
+        const tokens = await this.createTokens(user.id, user.email, user.role);
         await this.updateRtHash(user.id, tokens.refresh_token);
         return tokens;
     }
 
 
     async updateRtHash(userId: number, rt: string): Promise<void> {
-        const hash = await argon.hash(rt)
+
+        const refresh_token = await hash(rt)
         await this.prismaService.user.update({
             where: {
                 id: userId
             },
             data: {
-                refresh_token: hash,
+                refresh_token: refresh_token,
             }
         })
     }
 
-    async getTokens(userId: number, email: string, role:string): Promise<Tokens> {
+    async createTokens(userId: number, email: string, role: string): Promise<Tokens> {
         const jwtPayload: JwtPayload = {
             id: userId,
             email: email,
             role: role
         };
+        const optionAT = {
+            secret: configs.ACCESS_TOKEN_SECRET,
+            expiresIn: configs.ACCESS_TOKEN_EXPIRES,
+            // algorithm: 'RS256',
+        };
+        const optionRT = {
+            secret: configs.REFRESH_TOKEN_SECRET,
+            expiresIn: configs.REFRESH_TOKEN_EXPIRES,
+            // algorithm: 'RS256',
+        }
+
         const [at, rt] = await Promise.all([
-            this.jwtService.signAsync(jwtPayload, {
-                secret: configs.ACCESS_TOKEN_SECRET,
-                expiresIn: configs.ACCESS_TOKEN_EXPIRES,
-                // algorithm: 'RS256',
-            }),
-            this.jwtService.signAsync(jwtPayload, {
-                secret: configs.REFRESH_TOKEN_SECRET,
-                expiresIn: configs.REFRESH_TOKEN_EXPIRES,
-                // algorithm: 'RS256',
-            })
+            this.generateToken(jwtPayload, optionAT),
+            this.generateToken(jwtPayload, optionRT)
         ]);
         return {
             access_token: at,

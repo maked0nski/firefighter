@@ -1,5 +1,8 @@
+import * as process from "process";
+
 export const configs = {
     PORT: process.env.PORT || 8080,
+    FrontEnd_APP_URL: process.env.FE_APP_URL || "http://localhost:4200",
 
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || "AccessToken_SECRET_KeY",
     ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || "1h",
@@ -7,6 +10,8 @@ export const configs = {
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || "RefreshToken_SECRET_KeY",
     REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "2 days",
 
-    MAIL_TRANSPORT: process.env.MAIL_TRANSPORT || "smtps://useYandex@yandex.ru:password@smtp.yandex.ru",
-    MAIL_FROM_NAME: process.env.MAIL_FROM_NAME || "WebWork",
+    NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,
+    NO_REPLY_EMAIL_PASSWORD: process.env.NO_REPLY_EMAIL_PASSWORD,
+    // NO_REPLY_EMAIL_FROM: `"No Reply. Пожежне Спостереження" <${process.env.NO_REPLY_EMAIL}>`
+    NO_REPLY_EMAIL_FROM: process.env.NO_REPLY_EMAIL_FROM
 }

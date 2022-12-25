@@ -28,10 +28,9 @@ model User {
     password      String
     refresh_token String?     @db.VarChar(500)
 
-    verified        Boolean?    @default(false)                      // статус користувача підтвердив почту чи ні
+    status        statusEnum    @default(pending)                      // статус користувача підтвердив почту чи ні
     verificationCode    String?    @db.VarChar(500) @unique             //код верифікації для реестрації користувача, та скидання чи відновлення паролю
-    passwordResetToken  String?                            //токен для скадання чи зміни паролю
-    passwordResetAt     DateTime?                             //строк життя токена
+    verificationCodeAt     DateTime?                             //строк життя токена
 
     @@index([email])
     @@index([positionId], map: "users_positionId_fkey")
@@ -154,4 +153,9 @@ enum Role {
   USER
   ADMIN
   ROOT
+}
+enum statusEnum {
+    pending
+    active
+    blocked
 }

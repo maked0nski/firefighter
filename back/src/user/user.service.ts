@@ -2,12 +2,12 @@ import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundExcep
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
 import {PrismaService} from '../__core/prisma.service';
 import {MailerService} from "@nestjs-modules/mailer";
-import { join } from 'path';
+import {join} from 'path';
 
 import {Exception} from "../__exceptions";
 import {UpdateUserDto} from "./dto";
 import {UserType} from "./type";
-
+import {AuthUserDto} from "../auth/dto";
 
 
 @Injectable()
@@ -18,6 +18,15 @@ export class UserService {
         private readonly mailerService: MailerService
     ) {
     }
+
+    async create(user: AuthUserDto) {
+        return await this.prismaService.user
+            .create({
+                data: user,
+            });
+    }
+
+
 
     async getAll() {
         return await this.prismaService.user.findMany({
@@ -125,21 +134,22 @@ export class UserService {
 
     }
 
-    async updateUser(userId: number, data: UpdateUserDto): Promise<UserType> {
+    async updateUser(userId: number, data: Partial<UpdateUserDto>): Promise<UserType> {
 
         try {
             return await this.prismaService.user
                 .update({
                     where: {id: userId},
-                    data: {
-                        surename: data.surename,
-                        name: data.name,
-                        fathersname: data.fathersname,
-                        phone: data.phone,
-                        birthday: data.birthday,
-                        image: data.image,
-                        role: data.role,
-                    },
+                    data,
+                    // data: {
+                    //     surename: data.surename,
+                    //     name: data.name,
+                    //     fathersname: data.fathersname,
+                    //     phone: data.phone,
+                    //     birthday: data.birthday,
+                    //     image: data.image,
+                    //     role: data.role,
+                    // },
                     select: {
                         id: true,
                         surename: true,

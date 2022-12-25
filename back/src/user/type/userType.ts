@@ -6,4 +6,5 @@ export type UserType = {
     birthday: string,
     image: string,
     role:string,
+    status?:string,
 }

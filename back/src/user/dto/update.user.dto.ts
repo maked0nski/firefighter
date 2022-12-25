@@ -43,4 +43,9 @@ export class UpdateUserDto {
     @IsOptional()
     public role?: Role;
 
+    @ApiProperty({example: 'як токен', description: "Код підтверждення при створенні користувача, зміні пароля...", required:false})
+    @IsString()
+    @IsOptional()
+    public verificationCode?: string;
+
 }

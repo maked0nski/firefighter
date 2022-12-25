@@ -1,8 +1,7 @@
 import {MulterModule} from "@nestjs/platform-express";
-import {ConfigModule, ConfigService} from "@nestjs/config";
+import {ConfigModule} from "@nestjs/config";
 import {APP_GUARD} from "@nestjs/core";
 import {Module} from '@nestjs/common';
-import {MailerModule} from "@nestjs-modules/mailer";
 
 import {
     AuthModule, CarModule,
@@ -12,7 +11,7 @@ import {
     FireResistantImpregnationModule, FuelCardModule, ObservationModule, PositionModule, SimCardModule, UserModule
 } from './index';
 import {AccessTokenGuard} from "./__core/guards";
-import {getMailConfig} from "./__configs";
+import {MailModule} from "./mail/mail.module";
 
 
 @Module({
@@ -36,16 +35,14 @@ import {getMailConfig} from "./__configs";
         MulterModule.register({
             dest: './files',
         }),
-        MailerModule.forRootAsync({
-            imports: [ConfigModule],
-            inject: [ConfigService],
-            useFactory: getMailConfig,
+        MailModule,
+        ConfigModule.forRoot({
+            isGlobal: true, // no need to import into other modules
         }),
     ],
     providers: [
         {
             provide: APP_GUARD,
-            // useClass: AccessTokenGuard,
             useClass: AccessTokenGuard,
         },
     ],

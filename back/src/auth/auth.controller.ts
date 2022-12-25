@@ -1,12 +1,12 @@
 import {Body, Controller, HttpCode, HttpStatus, Post, UseGuards} from '@nestjs/common';
 import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
-import {AuthUserDto} from "./dto";
-import {AuthService} from "./auth.service";
-import {Tokens} from "./types";
-import {AccessTokenGuard, RefreshTokenGuard} from "../__core/guards";
 import {GetCurrentUserDecorator, GetCurrentUserIdDecorator, Public} from "../__core/decorators";
+import {AccessTokenGuard, RefreshTokenGuard} from "../__core/guards";
 import {GetCurrentUserRoleDecorator} from "../__core/decorators";
+import {AuthService} from "./auth.service";
+import {AuthUserDto} from "./dto";
+import {Tokens} from "./types";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -32,6 +32,13 @@ export class AuthController {
     }
 
     @Public()
+    @Post('signup')
+    signUp(@Body() authUserDto: AuthUserDto) {
+        return this.authService.signUp(authUserDto)
+    }
+
+
+    @Public()
     @ApiOperation({summary: 'Login user'})
     @ApiOkResponse({
         status: HttpStatus.OK, schema: {
@@ -46,7 +53,6 @@ export class AuthController {
     login(@Body() authUserDto: AuthUserDto): Promise<Tokens> {
         return this.authService.login(authUserDto);
     }
-
 
     @Post('logout')
     @ApiOperation({summary: 'Logout user'})
@@ -74,7 +80,7 @@ export class AuthController {
         @GetCurrentUserIdDecorator() userId: number,
         @GetCurrentUserDecorator('refreshToken') refreshToken: string
     ): Promise<Tokens> {
-        console.log("userId-", userId, "refreshToken:",refreshToken)
+        console.log("userId-", userId, "refreshToken:", refreshToken)
         return this.authService.refreshTokens(userId, refreshToken);
     }
 
@@ -85,6 +91,5 @@ export class AuthController {
         console.log("getRoleByTokken userId = " + role)
         return role
     }
-
 
 }
