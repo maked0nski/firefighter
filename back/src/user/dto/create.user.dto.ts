@@ -1,23 +1,14 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
-import {Role} from ".prisma/client"
+
+import {RoleEnum, StatusEnum} from "../enum";
 
 export class CreateUserDto {
-
-    @ApiProperty({example: 'Клопотенко', description: 'Прізвище'})
-    @IsString()
-    @IsOptional()
-    public surename: string;
 
     @ApiProperty({example: 'Андрій', description: "Ім'я"})
     @IsString()
     @IsOptional()
     public name: string;
-
-    @ApiProperty({example: 'Богданович', description: "По батькові"})
-    @IsString()
-    @IsOptional()
-    public fathersname: string;
 
     @ApiProperty({example: '050-321-21-12', description: "№ телефону. Унікальний"})
     @IsString()
@@ -48,5 +39,13 @@ export class CreateUserDto {
 
     @ApiProperty({example: 'ADMIN', description: "Роль користувача USER, ADMIN чи ROOT"})
     @IsOptional()
-    public role?: Role;
+    @IsString()
+    @IsEnum(RoleEnum)
+    public role?: RoleEnum;
+
+    @ApiProperty({example: 'pending', description: "Статус користувача pending, active чи blocked", required: false})
+    @IsString()
+    @IsOptional()
+    @IsEnum(StatusEnum)
+    public status?: StatusEnum;
 }

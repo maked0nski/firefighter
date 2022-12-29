@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
 import { PositionController } from './position.controller';
+import {PrismaService} from "../__core/prisma.service";
 import { PositionService } from './position.service';
-import {PrismaService} from "../core/prisma.service";
 
 @Module({
   imports: [],

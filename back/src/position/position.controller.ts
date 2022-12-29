@@ -1,12 +1,12 @@
 import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
+import {SWAGGER_EXAMPLE_POSITION, SWAGGER_EXAMPLE_POSITION_LIST} from "../__utils/example";
 import {PositionService} from "./position.service";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 import {PositionDto} from "./dto";
-import {AccessTokenGuard} from "../core/guards";
-import {CustomOkResponse} from "../utils";
-import {SWAGGER_EXAMPLE_POSITION, SWAGGER_EXAMPLE_POSITION_LIST} from "../utils/example";
-import {Exception} from "../exceptions";
 
 
 @ApiTags('Positions')

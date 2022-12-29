@@ -1,11 +1,14 @@
 export type UserType = {
-    id:number,
-    surename: string,
+    id: number,
     name: string,
-    fathersname: string,
+    surename?: string;
+    fathersname?: string;
     phone: string,
     email: string,
     birthday: string,
     image: string,
-    role:string,
+    role: string,
+    status?: string,
+    verificationCode?: string,
+    verificationCodeAt?: Date
 }

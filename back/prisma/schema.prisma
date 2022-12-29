@@ -8,28 +8,35 @@ datasource db {
 }
 
 model User {
-  id            Int         @id @default(autoincrement())
-  createdAt     DateTime    @default(now()) @db.Timestamp(6)
-  updatedAt     DateTime    @updatedAt
-  surename      String?
-  name          String?
-  fathersname   String?
-  phone         String?     @unique
-  email         String      @unique
-  birthday      String?
-  timeLeft      Int?        @default(0)
-  password      String
-  image         String?     @default("defaulAvatar.png")
-  role          Role        @default(USER)
-  refresh_token String?     @db.VarChar(500)
-  position      Position?   @relation("positionTousers", fields: [positionId], references: [id])
-  positionId    Int?
-  car           Car?        @relation("carTousers")
-  fuel_card     Fuel_card[] @relation("fuel_cardTousers")
+    id            Int         @id @default(autoincrement())
+    surename      String?
+    name          String?
+    fathersname   String?
+    phone         String?     @unique
+    email         String      @unique
+    birthday      String?
+    image         String?     @default("defaulAvatar.png")
+    role          Role        @default(USER)
+    position      Position?   @relation("positionTousers", fields: [positionId], references: [id])
+    positionId    Int?
+    car           Car?        @relation("carTousers")
+    fuel_card     Fuel_card[] @relation("fuel_cardTousers")
 
-  @@index([email])
-  @@index([positionId], map: "users_positionId_fkey")
-  @@map("users")
+    createdAt     DateTime    @default(now()) @db.Timestamp(6)
+    updatedAt     DateTime    @updatedAt
+
+    password      String
+//    access_token String?     @db.VarChar(500)
+    refresh_token String?     @db.VarChar(500)
+
+
+    status        StatusEnum    @default(pending)                      // статус користувача підтвердив почту чи ні
+    verificationCode    String?    @db.VarChar(500) @unique             //код верифікації для реестрації користувача, та скидання чи відновлення паролю
+    verificationCodeAt     DateTime?                             //строк життя токена
+
+    @@index([email])
+    @@index([positionId], map: "users_positionId_fkey")
+    @@map("users")
 }
 
 model Car {
@@ -148,4 +155,9 @@ enum Role {
   USER
   ADMIN
   ROOT
+}
+enum StatusEnum {
+    pending
+    active
+    blocked
 }

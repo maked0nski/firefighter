@@ -1,12 +1,23 @@
-import {Body, Controller, HttpCode, HttpStatus, Post, UseGuards} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpCode,
+    HttpStatus,
+    Patch,
+    Post,
+    Query,
+    UseGuards
+} from '@nestjs/common';
 import {ApiOkResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
-import {AuthUserDto} from "./dto";
+import {GetCurrentUserDecorator, GetCurrentUserIdDecorator, Public} from "../__core/decorators";
+import {AuthUserDto, ChangePasswordDto, ConfirmAccountDto, ForgotPasswordDto} from "./dto";
+import {AccessTokenGuard, RefreshTokenGuard} from "../__core/guards";
+import {GetCurrentUserRoleDecorator} from "../__core/decorators";
 import {AuthService} from "./auth.service";
+import {UserType} from "../user/type";
 import {Tokens} from "./types";
-import {AccessTokenGuard, RefreshTokenGuard} from "../core/guards";
-import {GetCurrentUserDecorator, GetCurrentUserIdDecorator, Public} from "../core/decorators";
-import {GetCurrentUserRoleDecorator} from "../core/decorators";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -31,6 +42,27 @@ export class AuthController {
         return this.authService.registration(authUserDto);
     }
 
+
+    @Public()
+    @ApiOperation({summary: 'Registration user'})
+    @ApiOkResponse({
+        status: HttpStatus.CREATED, schema: {
+            example: true
+        }
+    })
+    @Post('signup')
+    @HttpCode(HttpStatus.CREATED)
+    signUp(@Body() authUserDto: AuthUserDto) {
+        return this.authService.signUp(authUserDto)
+    }
+
+    @Public()
+    @Get('confirm')
+    async confirm(@Query() query: ConfirmAccountDto) {
+        await this.authService.confirm(query.token);
+        return true
+    }
+
     @Public()
     @ApiOperation({summary: 'Login user'})
     @ApiOkResponse({
@@ -46,7 +78,6 @@ export class AuthController {
     login(@Body() authUserDto: AuthUserDto): Promise<Tokens> {
         return this.authService.login(authUserDto);
     }
-
 
     @Post('logout')
     @ApiOperation({summary: 'Logout user'})
@@ -74,7 +105,6 @@ export class AuthController {
         @GetCurrentUserIdDecorator() userId: number,
         @GetCurrentUserDecorator('refreshToken') refreshToken: string
     ): Promise<Tokens> {
-        console.log("userId-", userId, "refreshToken:",refreshToken)
         return this.authService.refreshTokens(userId, refreshToken);
     }
 
@@ -82,8 +112,23 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     @Post('role')
     getRoleByTokken(@GetCurrentUserRoleDecorator() role: string,) {
-        console.log("getRoleByTokken userId = " + role)
         return role
+    }
+
+
+    @Public()
+    @Post('forgotPassword')
+    async forgotPassword(@Body() forgotPassword: ForgotPasswordDto): Promise<void> {
+        return this.authService.forgotPassword(forgotPassword);
+    }
+
+    @Patch('changePassword')
+    @UseGuards(AccessTokenGuard)
+    async changePassword(
+        @GetCurrentUserDecorator() user: UserType,
+        @Body() newPassword: ChangePasswordDto,
+    ): Promise<boolean> {
+        return this.authService.changePassword(user.id, newPassword);
     }
 
 

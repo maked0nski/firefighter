@@ -17,4 +17,9 @@ export class UpdateFireHydrantDto {
     @IsString()
     @IsOptional()
     public next_check?:string;
+
+    @ApiProperty({example: 4, description: 'Id фірми власника вогнегасників'})
+    @IsNumber()
+    @IsOptional()
+    public firmId?: number;
 }

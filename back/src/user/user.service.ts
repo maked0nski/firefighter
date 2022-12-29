@@ -1,16 +1,29 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
-
-import { PrismaService } from '../core/prisma.service';
-import {UpdateUserDto} from "./dto";
-import {Exception} from "../exceptions";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
+import {PrismaService} from '../__core/prisma.service';
+import {MailerService} from "@nestjs-modules/mailer";
+import {join} from 'path';
+
+import {Exception} from "../__exceptions";
+import {AuthUserDto} from "../auth/dto";
+import {UpdateUserDto} from "./dto";
 import {UserType} from "./type";
 
 
 @Injectable()
 export class UserService {
 
-    constructor(private prismaService: PrismaService) {
+    constructor(
+        private prismaService: PrismaService,
+        private readonly mailerService: MailerService
+    ) {
+    }
+
+    async create(user: AuthUserDto) {
+        return await this.prismaService.user
+            .create({
+                data: user,
+            });
     }
 
     async getAll() {
@@ -31,7 +44,7 @@ export class UserService {
 
     async getAllWithCar(): Promise<UserType[]> {
         return this.prismaService.user.findMany({
-            where:{
+            where: {
                 car: {
                     isNot: null
                 }
@@ -53,7 +66,7 @@ export class UserService {
 
     async getAllWithPosition(): Promise<UserType[]> {
         return await this.prismaService.user.findMany({
-            where:{
+            where: {
                 position: {
                     isNot: null
                 }
@@ -75,9 +88,9 @@ export class UserService {
 
     async getAllWithCarAndPosition(): Promise<UserType[]> {
         return await this.prismaService.user.findMany({
-            where:{
-                position:{isNot:null},
-                car:{isNot:null}
+            where: {
+                position: {isNot: null},
+                car: {isNot: null}
             },
             select: {
                 id: true,
@@ -119,21 +132,22 @@ export class UserService {
 
     }
 
-    async updateUser(userId: number, data: UpdateUserDto): Promise<UserType> {
+    async updateUser(userId: number, data: Partial<UpdateUserDto>): Promise<UserType> {
 
         try {
             return await this.prismaService.user
                 .update({
                     where: {id: userId},
-                    data: {
-                        surename: data.surename,
-                        name: data.name,
-                        fathersname: data.fathersname,
-                        phone: data.phone,
-                        birthday: data.birthday,
-                        image: data.image,
-                        role: data.role,
-                    },
+                    data,
+                    // data: {
+                    //     surename: data.surename,
+                    //     name: data.name,
+                    //     fathersname: data.fathersname,
+                    //     phone: data.phone,
+                    //     birthday: data.birthday,
+                    //     image: data.image,
+                    //     role: data.role,
+                    // },
                     select: {
                         id: true,
                         surename: true,
@@ -297,5 +311,53 @@ export class UserService {
             throw new HttpException(e.message, HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    async sendConfirmMail(user: UserType) {
+        const urlConfirmAddress = "temp address";
+
+        // Відправка пошти
+        return await this.mailerService
+            .sendMail({
+                to: user.email,
+                subject: 'Підтвердження реєстрації',
+                template: join(__dirname, '/../templates', 'confirmReg'),
+                context: {
+                    id: user.id,
+                    username: user.name,
+                    urlConfirmAddress,
+                },
+            })
+            .catch((e) => {
+                throw new HttpException(
+                    `Помилка роботи пошти: ${JSON.stringify(e)}`,
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                );
+            });
+    }
+
+    getByEmail(email: string): Promise<UserType> {
+        return this.prismaService.user
+            .findUnique({
+                where: {
+                    email: String(email)
+                },
+                select: {
+                    id: true,
+                    surename: true,
+                    name: true,
+                    fathersname: true,
+                    phone: true,
+                    email: true,
+                    birthday: true,
+                    image: true,
+                    role: true,
+                    car: true,
+                    positionId: true,
+                    fuel_card: true
+                }
+            }).catch((error) => {
+                throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+            })
     }
 }

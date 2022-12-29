@@ -1,8 +1,9 @@
 import {ForbiddenException, HttpException, HttpStatus, Injectable, NotFoundException} from '@nestjs/common';
-import {CreateFireExtinguishersDto, UpdateFireExtinguishersDto} from "./dto";
-import {PrismaService} from "../core/prisma.service";
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {Exception} from "../exceptions";
+
+import {CreateFireExtinguishersDto, UpdateFireExtinguishersDto} from "./dto";
+import {PrismaService} from "../__core/prisma.service";
+import {Exception} from "../__exceptions";
 
 @Injectable()
 export class FireExtinguishersService {
@@ -11,7 +12,6 @@ export class FireExtinguishersService {
     }
 
     create(dto: CreateFireExtinguishersDto): Promise<CreateFireExtinguishersDto> {
-        console.log(dto)
         return Promise
             .resolve(this.prismaService.fire_extinguishers
                 .create({data: dto}))

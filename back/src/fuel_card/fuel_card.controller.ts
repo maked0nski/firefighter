@@ -1,15 +1,15 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
-import {AccessTokenGuard} from "../core/guards";
-import {FuelCardService} from "./fuel_card.service";
 import {CreateFuelCardDto, UpdateFuelCardDto} from "./dto";
-import {CustomOkResponse} from "../utils";
+import {FuelCardService} from "./fuel_card.service";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 import {
     SWAGGER_EXAMPLE_ARRAY_FUEL_CARD_LIST,
     SWAGGER_EXAMPLE_ONE_FUEL_CARD
-} from "../utils/example";
-import {Exception} from "../exceptions";
+} from "../__utils/example";
 
 @ApiTags('Fuel cards')
 @Controller('fuel_card')

@@ -1,5 +1,5 @@
-import {ApiProperty} from "@nestjs/swagger";
 import {IsNumber, IsOptional, IsString, Max, Min} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateObservationDto {
     @ApiProperty({example: '12341', description: 'Обєктовий номер на пульті цілодобового спостереження'})
@@ -17,7 +17,7 @@ export class CreateObservationDto {
     @IsOptional()
     public contract?: string;
 
-    // @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required: true})
+    @ApiProperty({example: '1', description: 'id сім карти яка закріплена за обєктом', required: true})
     @IsString()
     @IsOptional()
     public sim_cardNumber?: string;

@@ -1,6 +1,7 @@
-import {Station_brend} from "../type";
-import {ApiProperty} from "@nestjs/swagger";
 import {IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
+
+import {Station_brend} from "../type";
 
 export class CreateFuelCardDto {
 
