@@ -1,10 +1,11 @@
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 import {ValidationPipe} from "@nestjs/common";
-import {NestFactory} from '@nestjs/core';
+import {NestFactory, Reflector} from '@nestjs/core';
 
 import {PrismaService} from "./__core/prisma.service";
 import {AppModule} from './app.module';
 import {configs} from './__configs';
+import {AccessTokenGuard} from "./__core/guards";
 
 const configureCors = {
     "origin": "*",
@@ -16,6 +17,7 @@ const configureCors = {
 
 // SwaggerConfig
 const swaggerConfig = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Firefighter NestJs API')
     .setDescription('API Портала пожежної служби')
     .setVersion('1.0')
@@ -28,8 +30,9 @@ async function bootstrap() {
     app.enableCors(configureCors);
 
     app.useGlobalPipes(new ValidationPipe());
-    // const reflector = new Reflector();
-    // app.useGlobalGuards(new AccessTokenGuard(reflector));
+    // ??
+    const reflector = new Reflector();
+    app.useGlobalGuards(new AccessTokenGuard(reflector));
 
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     SwaggerModule.setup('api', app, document);

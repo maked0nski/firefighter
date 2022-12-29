@@ -26,9 +26,11 @@ model User {
     updatedAt     DateTime    @updatedAt
 
     password      String
+//    access_token String?     @db.VarChar(500)
     refresh_token String?     @db.VarChar(500)
 
-    status        statusEnum    @default(pending)                      // статус користувача підтвердив почту чи ні
+
+    status        StatusEnum    @default(pending)                      // статус користувача підтвердив почту чи ні
     verificationCode    String?    @db.VarChar(500) @unique             //код верифікації для реестрації користувача, та скидання чи відновлення паролю
     verificationCodeAt     DateTime?                             //строк життя токена
 
@@ -154,7 +156,7 @@ enum Role {
   ADMIN
   ROOT
 }
-enum statusEnum {
+enum StatusEnum {
     pending
     active
     blocked

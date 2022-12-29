@@ -1,5 +1,6 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
+
 import {RoleEnum, StatusEnum} from "../enum";
 
 export class CreateUserDto {
@@ -38,9 +39,13 @@ export class CreateUserDto {
 
     @ApiProperty({example: 'ADMIN', description: "Роль користувача USER, ADMIN чи ROOT"})
     @IsOptional()
+    @IsString()
+    @IsEnum(RoleEnum)
     public role?: RoleEnum;
 
-    @ApiProperty({example: 'blocked', description: "Статус користувача"})
+    @ApiProperty({example: 'pending', description: "Статус користувача pending, active чи blocked", required: false})
+    @IsString()
     @IsOptional()
+    @IsEnum(StatusEnum)
     public status?: StatusEnum;
 }

@@ -31,7 +31,6 @@ export class ContactPersonController {
     @HttpCode(HttpStatus.CREATED)
     @Post()
     create(@Body() dto: CreateContactPersonDto): Promise<CreateContactPersonDto> {
-        console.log(dto)
         return this.contactPersonService.create(dto)
     };
 
@@ -71,7 +70,6 @@ export class ContactPersonController {
     @HttpCode(HttpStatus.CREATED)
     @Patch(':id')
     update(@Param('id') id: string, @Body() dto: UpdateContactPersonDto): Promise<CreateContactPersonDto> {
-        console.log(id)
         return this.contactPersonService.update(Number(id), dto);
     }
 

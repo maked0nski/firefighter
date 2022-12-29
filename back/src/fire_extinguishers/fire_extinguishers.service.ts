@@ -12,7 +12,6 @@ export class FireExtinguishersService {
     }
 
     create(dto: CreateFireExtinguishersDto): Promise<CreateFireExtinguishersDto> {
-        console.log(dto)
         return Promise
             .resolve(this.prismaService.fire_extinguishers
                 .create({data: dto}))

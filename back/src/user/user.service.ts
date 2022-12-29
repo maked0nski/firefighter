@@ -5,9 +5,9 @@ import {MailerService} from "@nestjs-modules/mailer";
 import {join} from 'path';
 
 import {Exception} from "../__exceptions";
+import {AuthUserDto} from "../auth/dto";
 import {UpdateUserDto} from "./dto";
 import {UserType} from "./type";
-import {AuthUserDto} from "../auth/dto";
 
 
 @Injectable()
@@ -25,8 +25,6 @@ export class UserService {
                 data: user,
             });
     }
-
-
 
     async getAll() {
         return await this.prismaService.user.findMany({
@@ -338,4 +336,28 @@ export class UserService {
             });
     }
 
+    getByEmail(email: string): Promise<UserType> {
+        return this.prismaService.user
+            .findUnique({
+                where: {
+                    email: String(email)
+                },
+                select: {
+                    id: true,
+                    surename: true,
+                    name: true,
+                    fathersname: true,
+                    phone: true,
+                    email: true,
+                    birthday: true,
+                    image: true,
+                    role: true,
+                    car: true,
+                    positionId: true,
+                    fuel_card: true
+                }
+            }).catch((error) => {
+                throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+            })
+    }
 }

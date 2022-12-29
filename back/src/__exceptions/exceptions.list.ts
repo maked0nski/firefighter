@@ -1,4 +1,5 @@
 export enum Exception {
+    EMAIL_EXISTS = 'User with this email is already exists',
     UNATHORIZED = 'Unathorized',
     FORBIDDEN = "Forbidden. Credentials incorrect",
     CARD_NOT_FOUND = " Card with this ID does not found",

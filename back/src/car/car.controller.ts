@@ -24,7 +24,6 @@ export class CarController {
     @HttpCode(HttpStatus.CREATED)
     @Post('')
     createCar(@Body() carDto: CreateCarDto): Promise<CreateCarDto> {
-        console.log(carDto)
         return this.carService.create(carDto)
     }
 
@@ -54,7 +53,6 @@ export class CarController {
     @HttpCode(HttpStatus.CREATED)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
-        console.log(updateCarDto)
         return this.carService.update(Number(id), updateCarDto);
     }
 

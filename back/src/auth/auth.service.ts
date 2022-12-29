@@ -1,18 +1,26 @@
 import {PrismaClientKnownRequestError} from "@prisma/client/runtime";
-import {ForbiddenException, Injectable} from '@nestjs/common';
+import {
+    BadRequestException,
+    ForbiddenException,
+    Injectable,
+    MethodNotAllowedException,
+} from '@nestjs/common';
 import {SignOptions} from 'jsonwebtoken';
 import {JwtService} from "@nestjs/jwt";
+import moment = require('moment');
 import * as bcrypt from 'bcrypt';
 
+import {AuthUserDto, ChangePasswordDto, ForgotPasswordDto} from "./dto";
 import {PrismaService} from "../__core/prisma.service";
 import {MailService} from "../mail/mail.service";
 import {UserService} from "../user/user.service";
 import {JwtPayload, Tokens} from "./types";
+import {Exception} from "../__exceptions";
+import {hashPassword} from "../__utils";
+import {StatusEnum} from "../user/enum";
 import {UserType} from "../user/type";
 import {configs} from "../__configs";
 import * as process from "process";
-import {AuthUserDto} from "./dto";
-import {hash} from "../__utils";
 
 
 @Injectable()
@@ -28,13 +36,42 @@ export class AuthService {
         this.clientAppUrl = configs.FrontEnd_APP_URL
     }
 
-    async sendConfirmation(user: Partial<UserType>) {
-        // const expiresIn = 60 * 60 * 24; // 24 hours
-        // let accessToken = process.env.ACCESS_TOKEN_SECRET;
+    async generateToken(data, options?: SignOptions): Promise<string> {
+        return this.jwtService.signAsync(data, options);
+    }
+
+    async signUp(userDto: AuthUserDto): Promise<boolean> {  // створення користувача
+        const foundUser = await this.prismaService.user     // шукаємо з вказатим емайлом
+            .findUnique({
+                where: {
+                    email: userDto.email
+                }
+            });
+        if (!foundUser) {                                               // якщо нема користувача з даною поштою
+            const password = await hashPassword(userDto.password)       //хешуєм пароль
+            const user = await this.prismaService.user          //створюємо користувача
+                .create({
+                    data: {
+                        email: userDto.email,
+                        password,
+                    }
+                })
+            await this.sendEmail(user, "confirmation");                  // відправляємо підтвердження на почту
+            return true
+        }
+        throw new ForbiddenException(Exception.EMAIL_EXISTS)
+    }
+
+    async sendEmail(user: Partial<UserType>, templations: string) {
+
+        const verificationCodeAt = moment()                 // срок життя токена підтвердження емайла
+            .add(1, 'day')
+            .toISOString();
 
         const option = {
             secret: process.env.ACCESS_TOKEN_SECRET,
             expiresIn: 60 * 60 * 24 // 24 hours
+
         }
 
         const tokenPayload = {
@@ -42,68 +79,55 @@ export class AuthService {
             status: user.status,
             role: user.role
         }
-        // const verificationCodeAt = moment()
-        //     .add(1, 'day')
-        //     .toISOString();
 
         const verificationCode = await this.generateToken(tokenPayload, option);
-        console.log("verificationCode: ", verificationCode)
-        // const urlConfirmAddress = `${this.clientAppUrl}/auth/confirm?token=${verificationCode}`;
-        //
-        // console.log(urlConfirmAddress)
 
-
-        await this.userService.updateUser(user.id, {verificationCode});
-
-        return await this.mailService.sendUserConfirmation(user, verificationCode)
-
-        // return await this.mailService.sendMail({
-        //     to: user.email,
-        //     subject: 'Підтверження реєстрації на сайті пожежного спостереження',
-        //     template: join(__dirname, '/../__templates', 'confirmReg'),
-        //     context: {
-        //         id: user.id,
-        //         username: user?.name,
-        //         urlConfirmAddress,
-        //     },
-        // })
-        //     .catch((e) => {
-        //         throw new HttpException(
-        //             `Помилка роботи пошти: ${JSON.stringify(e)}`,
-        //             HttpStatus.UNPROCESSABLE_ENTITY,
-        //         );
-        //     });
+        await this.userService.updateUser(user.id, {verificationCode, verificationCodeAt});
+        return await this.mailService.sendUserConfirmation(user, verificationCode, templations)
 
     }
 
-    private async generateToken(data, options?: SignOptions): Promise<string> {
-        return this.jwtService.signAsync(data, options);
-    }
+    async confirm(token: string): Promise<UserType> {
+        const userFromBD = await this.verifyToken(token);
 
-    async signUp(userDto: AuthUserDto): Promise<boolean> {
+        if (userFromBD && userFromBD.status === StatusEnum.pending) {
 
-        const password = await hash(userDto.password)
-        const user = await this.prismaService.user
-            .create({
-                data: {
-                    email: userDto.email,
-                    password,
-                }
+            return this.userService.updateUser(userFromBD.id, {
+                status: StatusEnum.active,
+                verificationCode: null,
+                verificationCodeAt: null
             })
-        await this.sendConfirmation(user);
-        return true
+        }
+        throw new BadRequestException('Confirmation error');
     }
 
+    async verifyToken(token): Promise<any> {
+        const option = {
+            secret: process.env.ACCESS_TOKEN_SECRET,
+        }
+        try {
+            let data = this.jwtService.verify(token, option);
+            const userFromBD = await this.prismaService.user
+                .findUnique({
+                    where: {
+                        id: data?.id
+                    }
+                })
+            if (userFromBD && moment().isBefore(userFromBD.verificationCodeAt)) {   //якщо протермінований код заново вислати
+                return userFromBD
+            }
+        } catch (error) {
+            return false
+        }
+    }
 
     async registration(userDto: AuthUserDto): Promise<Tokens> {
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(userDto.password, salt);
 
         const user = await this.prismaService.user
             .create({
                 data: {
                     email: userDto.email,
-                    password: hash,
+                    password: await hashPassword(userDto.password),
                 },
             })
             .catch((error) => {
@@ -120,34 +144,37 @@ export class AuthService {
     }
 
     async login(userDto: AuthUserDto): Promise<Tokens> {
+
         const user = await this.prismaService.user.findUnique({
             where: {
                 email: userDto.email
             }
         })
-        if (!user) throw  new ForbiddenException("Access Denied");
+        if (user && await bcrypt.compare(userDto.password, user?.password)) {
+            if (user.status !== StatusEnum.active) {
+                throw new MethodNotAllowedException(); // Accaunt is not active
+            }
+            const tokens = await this.createTokens(user.id, user.email, user.role);
+            await this.updateRtHash(user.id, tokens.refresh_token);
+            return tokens;
+        }
 
-        const passMatches = await bcrypt.compare(user.password, userDto.password);
+        throw  new ForbiddenException("Access Denied");
 
-        if (!passMatches) throw  new ForbiddenException("Access Denied");
 
-        const tokens = await this.createTokens(user.id, user.email, user.role);
-        await this.updateRtHash(user.id, tokens.refresh_token);
-        return tokens;
     }
 
     async logout(userId: number): Promise<boolean> {
-        await this.prismaService.user.updateMany({
-            where: {
-                id: userId,
-                refresh_token: {
-                    not: null,
+        await this.prismaService.user
+            .update({
+                where: {
+                    id: userId,
                 },
-            },
-            data: {
-                refresh_token: null
-            }
-        })
+                data: {
+
+                    refresh_token: null
+                }
+            })
         return true;
     }
 
@@ -168,10 +195,9 @@ export class AuthService {
         return tokens;
     }
 
-
     async updateRtHash(userId: number, rt: string): Promise<void> {
 
-        const refresh_token = await hash(rt)
+        const refresh_token = await hashPassword(rt)
         await this.prismaService.user.update({
             where: {
                 id: userId
@@ -218,6 +244,29 @@ export class AuthService {
         });
 
         return user.role
+    }
+
+    async forgotPassword({email}: ForgotPasswordDto): Promise<void> {
+        const foundUser = await this.userService.getByEmail(email);
+        if (!foundUser) {
+            throw new BadRequestException('Invalid email');
+        }
+
+        return await this.sendEmail(foundUser, 'forgotPassword') //формує посилання на фронт з токеном
+
+    }
+
+    async changePassword(id: number, changePasswordDto: ChangePasswordDto): Promise<boolean> {
+        const password = await hashPassword(changePasswordDto.password);
+        await this.prismaService.user
+            .update({
+                where: {id},
+                data: {
+                    password,
+                    refresh_token: null
+                }
+            })
+        return true;
     }
 
 }
