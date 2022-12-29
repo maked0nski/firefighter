@@ -1,5 +1,5 @@
-import {HttpStatus} from '@nestjs/common';
 import {ApiBadRequestResponse, ApiOkResponse} from '@nestjs/swagger';
+import {HttpStatus} from '@nestjs/common';
 
 import {Exception} from '../__exceptions';
 

@@ -1,14 +1,14 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 
-import {CreateFireExtinguishersDto, UpdateFireExtinguishersDto} from "./dto";
-import {FireExtinguishersService} from "./fire_extinguishers.service";
-import {CustomOkResponse} from "../__utils";
-import {Exception} from "../__exceptions";
-import {AccessTokenGuard} from "../__core/guards";
 import {
     SWAGGER_EXAMPLE_FIRE_EXTINGUISHER, SWAGGER_EXAMPLE_FIRE_EXTINGUISHER_BODY
 } from "../__utils/example";
+import {CreateFireExtinguishersDto, UpdateFireExtinguishersDto} from "./dto";
+import {FireExtinguishersService} from "./fire_extinguishers.service";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 
 
 @ApiTags('Вогнегасники')

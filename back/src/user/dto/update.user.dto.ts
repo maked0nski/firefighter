@@ -1,6 +1,7 @@
 import {IsEnum, IsOptional, IsString} from "class-validator";
-import {RoleEnum, StatusEnum} from "../enum";
 import {ApiProperty} from "@nestjs/swagger";
+
+import {RoleEnum, StatusEnum} from "../enum";
 
 export class UpdateUserDto {
 

@@ -1,5 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Length} from "class-validator";
+
 import {Station_brend} from "../type";
 
 export class UpdateFuelCardDto {

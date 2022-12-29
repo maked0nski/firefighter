@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
+import {PrismaService} from "../__core/prisma.service";
 import { CarController } from './car.controller';
 import { CarService } from './car.service';
-import {PrismaService} from "../__core/prisma.service";
 
 @Module({
   imports: [],

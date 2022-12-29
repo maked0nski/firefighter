@@ -5,10 +5,10 @@ export const configs = {
     FrontEnd_APP_URL: process.env.FE_APP_URL || "http://localhost:8080",
 
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET || "AccessToken_SECRET_KeY",
-    ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || "30m",
+    ACCESS_TOKEN_EXPIRES: process.env.ACCESS_TOKEN_EXPIRES || "1 days",
 
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || "RefreshToken_SECRET_KeY",
-    REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "1 days",
+    REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "3 days",
     // REFRESH_TOKEN_EXPIRES: process.env.REFRESH_TOKEN_EXPIRES || "1 m",
 
     NO_REPLY_EMAIL: process.env.NO_REPLY_EMAIL,

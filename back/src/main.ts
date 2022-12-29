@@ -1,11 +1,11 @@
 import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
-import {ValidationPipe} from "@nestjs/common";
 import {NestFactory, Reflector} from '@nestjs/core';
+import {ValidationPipe} from "@nestjs/common";
 
 import {PrismaService} from "./__core/prisma.service";
+import {AccessTokenGuard} from "./__core/guards";
 import {AppModule} from './app.module';
 import {configs} from './__configs';
-import {AccessTokenGuard} from "./__core/guards";
 
 const configureCors = {
     "origin": "*",

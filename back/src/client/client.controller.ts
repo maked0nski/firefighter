@@ -1,11 +1,11 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 
 import {CreateClientDto, UpdateClientDto} from "./dto";
+import {AccessTokenGuard} from "../__core/guards";
 import {ClientService} from "./client.service";
 import {CustomOkResponse} from "../__utils";
 import {Exception} from "../__exceptions";
-import {AccessTokenGuard} from "../__core/guards";
 import {
     SWAGGER_CLIENT_BODY_EXAMPLE,
     SWAGGER_CLIENT_EXAMPLE, SWAGGER_CLIENT_LIST_EXAMPLE

@@ -13,8 +13,6 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: configs.ACCESS_TOKEN_SECRET,
             passReqToCallback: true,
-            // algorithm: 'RS256',
-            // allowInsecureKeySizes: true
         });
     }
 

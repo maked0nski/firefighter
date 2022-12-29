@@ -1,5 +1,5 @@
+import {IsEmail, IsOptional, IsString} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
-import {IsOptional, IsString} from "class-validator";
 
 export class CreateContactPersonDto {
 
@@ -27,6 +27,7 @@ export class CreateContactPersonDto {
     @ApiProperty({example: "email@gmail.com", description: "Електронна адреса контактної особи"})
     @IsString()
     @IsOptional()
+    @IsEmail()
     public email?: string;
 
 }

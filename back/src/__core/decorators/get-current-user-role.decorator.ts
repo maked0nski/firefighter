@@ -1,4 +1,5 @@
 import {createParamDecorator, ExecutionContext} from "@nestjs/common";
+
 import {JwtPayload} from "../../auth/types";
 
 export const GetCurrentUserRoleDecorator = createParamDecorator(

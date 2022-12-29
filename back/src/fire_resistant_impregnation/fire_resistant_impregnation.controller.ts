@@ -1,15 +1,15 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 
-import {AccessTokenGuard} from "../__core/guards";
+import {CreateFireResistantImpregnationDto,UpdateFireResistantImpregnationDto} from "./dto";
 import {FireResistantImpregnationService} from "./fire_resistant_impregnation.service";
-import {Exception} from "../__exceptions";
+import {AccessTokenGuard} from "../__core/guards";
 import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 import {
     SWAGGER_EXAMPLE_FIRE_RESISTANT_BODY,
     SWAGGER_EXAMPLE_FIRE_RESISTANT
 } from "../__utils/example";
-import {CreateFireResistantImpregnationDto,UpdateFireResistantImpregnationDto} from "./dto";
 
 @ApiTags('Просочення конструкцій вогнетривкою речовиною')
 @Controller('fire_resistant_impregnation')

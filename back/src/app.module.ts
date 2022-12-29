@@ -3,6 +3,8 @@ import {ConfigModule} from "@nestjs/config";
 import {APP_GUARD} from "@nestjs/core";
 import {Module} from '@nestjs/common';
 
+import {AccessTokenGuard} from "./__core/guards";
+import {MailModule} from "./mail/mail.module";
 import {
     AuthModule, CarModule,
     ClientModule,
@@ -10,8 +12,6 @@ import {
     FireHydrantModule,
     FireResistantImpregnationModule, FuelCardModule, ObservationModule, PositionModule, SimCardModule, UserModule
 } from './index';
-import {AccessTokenGuard} from "./__core/guards";
-import {MailModule} from "./mail/mail.module";
 
 
 @Module({

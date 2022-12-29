@@ -1,13 +1,14 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
-import {AccessTokenGuard} from "../__core/guards";
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
-import {ContactPersonService} from "./contact_person.service";
-import {Exception} from "../__exceptions";
-import {CustomOkResponse} from "../__utils";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
+
 import {
     SWAGGER_CONTACT_PERSON, SWAGGER_CONTACT_PERSON_BODY, SWAGGER_CONTACT_PERSON_LIST
 } from "../__utils/example";
 import {CreateContactPersonDto, UpdateContactPersonDto} from "./dto";
+import {ContactPersonService} from "./contact_person.service";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 
 
 @ApiTags('Контактні особи фірми клієнта')
