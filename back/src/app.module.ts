@@ -17,8 +17,8 @@ import {
 @Module({
     imports: [
         ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: `.${process.env.NONE_ENV}.env`
+            isGlobal: true, // Позволяет обратиться к env во всем приложении
+            envFilePath: `.${process.env.NONE_ENV}.env` // Указываем путь до env файла
         }),
         UserModule,
         AuthModule,
@@ -36,9 +36,6 @@ import {
             dest: './files',
         }),
         MailModule,
-        ConfigModule.forRoot({
-            isGlobal: true, // no need to import into other modules
-        }),
     ],
     providers: [
         {
