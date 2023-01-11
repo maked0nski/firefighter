@@ -64,6 +64,18 @@ export class UserService {
         });
     }
 
+    async clearNotRegistredUser() {
+
+        return await this.prismaService.user
+            .findMany({
+                where: {
+                    verificationCodeAt: {
+                        lt: new Date()
+                    },
+                }
+            })
+    }
+
     async getAllWithPosition(): Promise<UserType[]> {
         return await this.prismaService.user.findMany({
             where: {
@@ -336,8 +348,8 @@ export class UserService {
             });
     }
 
-    getByEmail(email: string): Promise<UserType> {
-        return this.prismaService.user
+    async getByEmail(email: string): Promise<UserType> {
+        return await this.prismaService.user
             .findUnique({
                 where: {
                     email: String(email)
