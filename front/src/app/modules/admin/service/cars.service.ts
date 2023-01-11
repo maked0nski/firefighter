@@ -14,7 +14,6 @@ export class CarsService {
   }
 
   create(dto: ICar): Observable<ICar> {
-    console.log(dto)
     return this.httpClient.post<ICar>(urls.cars, dto);
   }
 
@@ -27,7 +26,6 @@ export class CarsService {
   }
 
   update(id: number, dto: Partial<ICar>) {
-    console.log(dto)
     return this.httpClient.patch<ICar>(`${urls.cars}/${id}`, dto);
   }
 

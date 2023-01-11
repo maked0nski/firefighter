@@ -69,7 +69,7 @@ export class SimCardComponent implements OnInit {
 
   _createTable(): void {
     this.simCardsTable = new MatTableDataSource(this.simCards);
-  }
+  }    //ToDo Написати валідатори на всі форми
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -138,7 +138,7 @@ export class SimCardComponent implements OnInit {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }

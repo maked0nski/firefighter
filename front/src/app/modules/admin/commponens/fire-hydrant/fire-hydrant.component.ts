@@ -32,7 +32,6 @@ export class FireHydrantComponent implements OnInit {
           timeLeft:this.timeCalc(tmp.next_check)
         }
       }
-      // console.log(this.hydrant)
       this.clientId = value?.id;
     })
     this._createForm()
@@ -41,7 +40,7 @@ export class FireHydrantComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  _createForm(): void {
+  _createForm(): void {    //ToDo Написати валідатори на всі форми
     this.form = new UntypedFormGroup({
       quantity: new UntypedFormControl(this.hydrant?.quantity, Validators.required),
       next_check: new UntypedFormControl(this.hydrant?.next_check, [Validators.required]),

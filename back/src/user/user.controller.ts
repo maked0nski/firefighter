@@ -1,3 +1,6 @@
+import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from '@nestjs/swagger';
+import {FileInterceptor} from "@nestjs/platform-express";
+import {diskStorage} from "multer";
 import {
     Body,
     Controller,
@@ -9,14 +12,14 @@ import {
     Patch, Res, UploadedFile,
     UseGuards, UseInterceptors
 } from '@nestjs/common';
-import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from '@nestjs/swagger';
-import {FileInterceptor} from "@nestjs/platform-express";
-import {diskStorage} from "multer";
 
-import {AtGuard} from "../core/guards";
+import {CustomOkResponse, editFileName, imageFileFilter} from "../__utils";
+import {AccessTokenGuard} from "../__core/guards";
+import {Public} from "../__core/decorators";
 import {UserService} from "./user.service";
+import {Exception} from "../__exceptions";
 import {UpdateUserDto} from "./dto";
-import {CustomOkResponse, editFileName, imageFileFilter} from "../utils";
+import {UserType} from "./type";
 import {
     SWAGGER_EXAMPLE_USER,
     SWAGGER_EXAMPLE_USER_BY_ID,
@@ -24,19 +27,17 @@ import {
     SWAGGER_EXAMPLE_USERS_LIST_WITH_CAR,
     SWAGGER_EXAMPLE_USERS_LIST_WITH_CAR_AND_POSITION,
     SWAGGER_EXAMPLE_USERS_LIST_WITH_POSITION,
-} from "../utils/example";
-import {Exception} from "../exceptions";
-import {UserType} from "./type";
-import {Public} from "../core/decorators";
+} from "../__utils/example";
 
 @ApiTags('Users')
 @Controller('users')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class UserController {
 
     constructor(
         private readonly userService: UserService,
-    ) {}
+    ) {
+    }
 
 
     @ApiOperation({summary: 'Get all users'})
@@ -120,13 +121,11 @@ export class UserController {
     }
 
 
-
     @Public()
     @Get('/avatar/:image')
     getAvatar(@Param('image') image, @Res() res) {
         return res.sendFile(image, {root: './files/image'});
     }
-
 
 
     @ApiOperation({summary: 'Add user position'})

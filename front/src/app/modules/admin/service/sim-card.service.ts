@@ -26,7 +26,6 @@ export class SimCardService {
   }
 
   create(fuelCard: ISimCard): Observable<ISimCard> {
-    console.log(fuelCard)
     return this.httpClient.post<ISimCard>(urls.sim_card, fuelCard);
   }
 

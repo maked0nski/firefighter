@@ -1,29 +1,28 @@
-import {Module} from '@nestjs/common';
+import {MulterModule} from "@nestjs/platform-express";
+import { ScheduleModule } from '@nestjs/schedule';
 import {ConfigModule} from "@nestjs/config";
 import {APP_GUARD} from "@nestjs/core";
-import {MulterModule} from "@nestjs/platform-express";
+import {Module} from '@nestjs/common';
 
-import {FireResistantImpregnationModule} from './fire_resistant_impregnation/fire_resistant_impregnation.module';
-import {FireExtinguishersModule} from './fire_extinguishers/fire_extinguishers.module';
-import {ContactPersonModule} from './contact_person/contact_person.module';
-import {FireHydrantModule} from './fire_hydrant/fire_hydrant.module';
-import {ObservationModule} from './observation/observation.module';
-import {FuelCardModule} from './fuel_card/fuel_card.module';
-import {PositionModule} from './position/position.module';
-import {SimCardModule} from './sim_card/sim_card.module';
-import {ClientModule} from './client/client.module';
-import {AuthModule} from './auth/auth.module';
-import {UserModule} from './user/user.module';
-import {CarModule} from './car/car.module';
-import {AtGuard} from "./core/guards";
+import {AccessTokenGuard} from "./__core/guards";
+import {MailModule} from "./mail/mail.module";
+import {
+    AuthModule, CarModule,
+    ClientModule,
+    ContactPersonModule, FireExtinguishersModule,
+    FireHydrantModule,
+    FireResistantImpregnationModule, FuelCardModule, ObservationModule, PositionModule, SimCardModule, UserModule
+} from './index';
+import { CronService } from './cron/cron.service';
 
 
 @Module({
     imports: [
         ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: `.${process.env.NONE_ENV}.env`
+            isGlobal: true, // Позволяет обратиться к env во всем приложении
+            envFilePath: `.${process.env.NONE_ENV}.env` // Указываем путь до env файла
         }),
+        ScheduleModule.forRoot(),
         UserModule,
         AuthModule,
         FuelCardModule,
@@ -38,13 +37,15 @@ import {AtGuard} from "./core/guards";
         ObservationModule,
         MulterModule.register({
             dest: './files',
-        })
+        }),
+        MailModule,
     ],
     providers: [
         {
             provide: APP_GUARD,
-            useClass: AtGuard,
+            useClass: AccessTokenGuard,
         },
+        CronService,
     ],
 })
 export class AppModule {

@@ -31,7 +31,6 @@ export class UsersService {
   }
 
   saveAvatar(id: number, uploadData: any) {
-    console.log(id, uploadData)
     return this.httpClient.patch(`${urls.users}/${id}`, uploadData);
   }
 

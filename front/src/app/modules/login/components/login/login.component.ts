@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  _createForm(): void {
+  _createForm(): void {     //ToDo Написати валідатори на всі форми
     this.loginForm = new UntypedFormGroup({
       email: new UntypedFormControl(null, [Validators.required, Validators.email]),
       password: new UntypedFormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),

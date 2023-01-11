@@ -1,17 +1,17 @@
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiBody, ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiParam, ApiTags} from "@nestjs/swagger";
+import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 
-import {SWAGGER_EXAMPLE_SIM_CARD, SWAGGER_EXAMPLE_SIM_CARD_LIST} from "../utils/example";
+import {SWAGGER_EXAMPLE_SIM_CARD, SWAGGER_EXAMPLE_SIM_CARD_LIST} from "../__utils/example";
 import {CreateSimCardDto, UpdateSimCardDto} from "./dto";
 import {SimCardService} from "./sim_card.service";
-import {CustomOkResponse} from "../utils";
-import {Exception} from "../exceptions";
-import {AtGuard} from "../core/guards";
+import {AccessTokenGuard} from "../__core/guards";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
 
 
 @ApiTags('Sim card list')
 @Controller('sim_card')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class SimCardController {
 
     constructor(private simCardService: SimCardService) {

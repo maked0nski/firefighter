@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 
 import {AuthUserInterface, TokenInterface} from "../interfaces";
@@ -12,8 +12,8 @@ export class LoginService {
 
   constructor(private httpClient: HttpClient) {}
 
-  login(loginInterface: AuthUserInterface): Observable<TokenInterface> {
-    return this.httpClient.post<TokenInterface>(urls.login, loginInterface);
+  login(user: AuthUserInterface): Observable<TokenInterface> {
+    return this.httpClient.post<TokenInterface>(urls.login, user);
   }
 
 }

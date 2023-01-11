@@ -25,7 +25,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  _createForm(): void {
+  _createForm(): void {     //ToDo Написати валідатори на всі форми
     this.registerForm = new UntypedFormGroup({
       email: new UntypedFormControl(null, [Validators.required, Validators.email]),
       password: new UntypedFormControl(null, [Validators.required, Validators.minLength(8), Validators.maxLength(20)]),
@@ -37,7 +37,7 @@ export class RegisterComponent implements OnInit {
     const rawValue = this.registerForm.getRawValue();
     delete rawValue.confirmPassword;
     this.registerService.register(rawValue).subscribe({
-      next:(value) => {
+      next:() => {
         this.router.navigate(['login'])
       },
       error:e => this.emailError = e.error.message

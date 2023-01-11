@@ -1,19 +1,19 @@
 import {Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards} from '@nestjs/common';
 import {ApiForbiddenResponse, ApiNotFoundResponse, ApiOperation, ApiTags} from "@nestjs/swagger";
 
-import {CreateCarDto, UpdateCarDto} from "./dto";
-import {CustomOkResponse} from "../utils";
-import {CarService} from "./car.service";
-import {Exception} from "../exceptions";
-import {AtGuard} from "../core/guards";
 import {
     SWAGGER_EXAMPLE_CAR, SWAGGER_EXAMPLE_CARS_LIST,
-} from "../utils/example";
+} from "../__utils/example";
+import {AccessTokenGuard} from "../__core/guards";
+import {CreateCarDto, UpdateCarDto} from "./dto";
+import {CustomOkResponse} from "../__utils";
+import {Exception} from "../__exceptions";
+import {CarService} from "./car.service";
 
 
 @ApiTags('Cars')
 @Controller('cars')
-@UseGuards(AtGuard)
+@UseGuards(AccessTokenGuard)
 export class CarController {
     constructor(private readonly carService: CarService) {
     }
@@ -24,7 +24,6 @@ export class CarController {
     @HttpCode(HttpStatus.CREATED)
     @Post('')
     createCar(@Body() carDto: CreateCarDto): Promise<CreateCarDto> {
-        console.log(carDto)
         return this.carService.create(carDto)
     }
 
@@ -54,7 +53,6 @@ export class CarController {
     @HttpCode(HttpStatus.CREATED)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateCarDto: UpdateCarDto) {
-        console.log(updateCarDto)
         return this.carService.update(Number(id), updateCarDto);
     }
 

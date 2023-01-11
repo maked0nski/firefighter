@@ -38,7 +38,7 @@ export class ObservationComponent implements OnInit {
         this.simCardService.findFree().subscribe(value => this.simCartList = value)
     }
 
-    _createForm(): void {
+    _createForm(): void {    //ToDo Написати валідатори на всі форми
         this.form = new UntypedFormGroup({
             number: new UntypedFormControl(null, Validators.required),
             contract: new UntypedFormControl(null, [Validators.required]),

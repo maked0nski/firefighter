@@ -1,5 +1,6 @@
-import {ApiProperty} from "@nestjs/swagger";
 import {IsBoolean, IsEnum,  IsOptional, IsString, Length} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
+
 import {OperatorEnum} from "../enum";
 
 export class UpdateSimCardDto {

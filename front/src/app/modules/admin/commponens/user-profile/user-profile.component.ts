@@ -38,7 +38,7 @@ export class UserProfileComponent implements OnInit {
     })
   }
 
-  _createForm(): void {
+  _createForm(): void {    //ToDo Написати валідатори на всі форми
     this.form = this.fb.group({
       surename: new FormControl(null),
       name: new FormControl(null),
@@ -98,7 +98,7 @@ export class UserProfileComponent implements OnInit {
       )
       .subscribe({
         next: (event) => {
-          console.log("subscribe event", event);
+          // console.log("subscribe event", event);
           this.dataService.userStorage.next(event as IUser);
         },
         error: () => console.log('Upload error'),

@@ -39,7 +39,7 @@ export class ClientsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  _createForm(): void {
+  _createForm(): void {    //ToDo Написати валідатори на всі форми
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, Validators.required),
       city: new UntypedFormControl(null, [Validators.required]),
@@ -102,7 +102,6 @@ export class ClientsComponent implements OnInit {
   }
 
   delete(id: number, templateRef: any) {
-    console.log("id", id)
     this.openDialog(templateRef)
   }
 
@@ -129,7 +128,6 @@ export class ClientsComponent implements OnInit {
   }
 
   onNoClick(): void {
-    console.log("close")
     this.dialog.closeAll();
   }
 

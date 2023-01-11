@@ -31,7 +31,6 @@ export class FireResistantImpregnationComponent implements OnInit {
                     ...tmp,
                     timeLeft: this.timeCalc(tmp.next_check)
                 };
-                // console.log(this.impregnation)
             }
 
             this.clientId = value?.id;
@@ -42,7 +41,7 @@ export class FireResistantImpregnationComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    _createForm(): void {
+    _createForm(): void {    //ToDo Написати валідатори на всі форми
         this.form = new UntypedFormGroup({
             seepage_liquid: new UntypedFormControl(this.impregnation?.seepage_liquid, Validators.required),
             area: new UntypedFormControl(this.impregnation?.area, [Validators.required]),

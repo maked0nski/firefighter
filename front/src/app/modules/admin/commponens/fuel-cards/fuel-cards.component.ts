@@ -44,7 +44,7 @@ export class FuelCardsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  _createForm(): void {
+  _createForm(): void {    //ToDo Написати валідатори на всі форми
     this.form = new UntypedFormGroup({
       number: new UntypedFormControl(null, Validators.required),
       pin: new UntypedFormControl(null, [Validators.required, Validators.pattern(RegEx.pin)]),
@@ -122,7 +122,7 @@ export class FuelCardsComponent implements OnInit {
       width: '400px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }

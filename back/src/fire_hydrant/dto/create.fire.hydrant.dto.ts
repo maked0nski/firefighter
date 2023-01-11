@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsNumber, IsString} from "class-validator";
+import {IsBoolean, IsNumber, IsOptional, IsString} from "class-validator";
 
 export class CreateFireHydrantDto {
 
@@ -7,7 +7,7 @@ export class CreateFireHydrantDto {
     @IsBoolean()
     public reminding: boolean;
 
-    @ApiProperty({example: 4, description: 'Кільукість пожежних гідрантів'})
+    @ApiProperty({example: 4, description: 'Кількість пожежних гідрантів'})
     @IsNumber()
     public quantity: number;
 
@@ -15,6 +15,8 @@ export class CreateFireHydrantDto {
     @IsString()
     public next_check: string;
 
-
+    @ApiProperty({example: 4, description: 'Id фірми власника вогнегасників'})
+    @IsNumber()
+    @IsOptional()
     public firmId?: number;
 }

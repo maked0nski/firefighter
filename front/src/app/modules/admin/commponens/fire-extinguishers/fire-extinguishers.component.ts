@@ -60,7 +60,6 @@ export class FireExtinguishersComponent implements OnInit {
                         timeLeft: this.timeCalc(val.next_check)
                     }
                 });
-                // console.log(this.fire_extinguishers)
             }
 
             this._createTable()
@@ -85,7 +84,6 @@ export class FireExtinguishersComponent implements OnInit {
             firmId: this.client?.id
         }
 
-        console.log(rawValue)
         if (!this.forUpdate) {
             this.fireExtinguishersService
                 .create(rawValue)
@@ -113,7 +111,7 @@ export class FireExtinguishersComponent implements OnInit {
         }
     }
 
-    _createForm(): void {
+    _createForm(): void {    //ToDo Написати валідатори на всі форми
         this.form = new UntypedFormGroup({
             model: new UntypedFormControl(null, Validators.required),
             quantity: new UntypedFormControl(null, Validators.required),
